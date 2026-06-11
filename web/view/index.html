@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{pageTitle}}</title>
+    <link rel="stylesheet" href="/css/index.min.css">
+</head>
+<body>
+    {{{template-vars}}}
+    <main id="frame">
+        <section class="page-shell">
+            <header class="page-header">
+                <div>
+                    <p class="eyebrow">Generic web/API starter</p>
+                    <h1>{{heading}}</h1>
+                    <p class="summary">A small working sample that keeps DOM, API, model, helper, and route responsibilities separated.</p>
+                </div>
+                <div class="status-pill" data-status="loading">
+                    <span class="status-dot"></span>
+                    <span data-role="api-status">Checking API</span>
+                </div>
+            </header>
+
+            <section class="workspace-grid">
+                <form id="item-form" class="panel">
+                    <h2>Create item</h2>
+                    <label>
+                        <span>Name</span>
+                        <input id="name" name="name" type="text" autocomplete="off" required maxlength="255">
+                    </label>
+                    <label>
+                        <span>Description</span>
+                        <textarea id="description" name="description" rows="4"></textarea>
+                    </label>
+                    <button id="save-item" class="default" type="submit">Save item</button>
+                </form>
+
+                <section class="panel">
+                    <div class="panel-heading">
+                        <h2>Items</h2>
+                        <button id="refresh-items" type="button" title="Refresh items">
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
+                    </div>
+                    <div id="item-list" class="item-list" aria-live="polite"></div>
+                </section>
+            </section>
+        </section>
+    </main>
+    <script src="/js/index.min.js"></script>
+</body>
+</html>

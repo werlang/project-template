@@ -1,0 +1,24 @@
+{
+  "name": "template-api",
+  "version": "1.0.0",
+  "description": "Generic Express and MySQL API service template",
+  "type": "module",
+  "scripts": {
+    "production": "node app.js",
+    "development": "node --inspect=0.0.0.0 --watch app.js",
+    "test": "vitest run",
+    "test:unit": "vitest run --config vitest.unit.config.mjs",
+    "test:integration": "vitest run --config vitest.integration.config.mjs"
+  },
+  "author": "Template Maintainers",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.10.1",
+    "supertest": "^7.0.0",
+    "vitest": "^2.1.9"
+  }
+}

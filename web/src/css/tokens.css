@@ -1,0 +1,46 @@
+:root {
+    --font-body: 'Roboto', Helvetica, Arial, sans-serif;
+    --font-display: 'Raleway', Helvetica, Arial, sans-serif;
+    --font-mono: 'Source Code Pro', Consolas, 'Courier New', monospace;
+    --font-fa-solid: 'Font Awesome 7 Free', 'Font Awesome 6 Free', 'Font Awesome 5 Free', 'Font Awesome 4 Free';
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+
+    --color-background: #faf7f4;
+    --color-main: #5b775a;
+    --color-main-alt: #542740;
+    --color-main-contrast: #f8f4ee;
+    --color-alt-contrast: #fbf8f4;
+    --color-border: color-mix(in srgb, var(--color-main), #ffffff 78%);
+    --color-text: #474c54;
+    --color-text-secondary: #6c7068;
+    --color-link: #3f7da4;
+    --color-info: #6f99bd;
+    --color-success: #7ca67f;
+    --color-warning: #cba75a;
+    --color-error: #cd7c72;
+    --color-shadow: color-mix(in srgb, var(--color-text), transparent 84%);
+
+    --radius: 8px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-pill: 999px;
+
+    --color-surface: var(--color-main-contrast);
+    --color-surface-muted: color-mix(in srgb, var(--color-main-contrast) 82%, var(--color-main) 18%);
+    --color-background-dark: #28322d;
+    --color-secondary: var(--color-main);
+    --color-text-muted: var(--color-text-secondary);
+    --color-text-inverse: var(--color-main-contrast);
+    --color-shadow-base: #000000;
+    --color-overlay: rgb(from var(--color-shadow-base) r g b / 0.56);
+    --shadow-sm: 0 1px 3px rgb(from var(--color-shadow-base) r g b / 0.12);
+    --shadow-md: 0 8px 24px rgb(from var(--color-shadow-base) r g b / 0.12);
+}

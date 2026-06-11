@@ -1,0 +1,26 @@
+services:
+    web:
+        environment:
+            - API_URL=http://api:3000
+    playwright:
+        build:
+            context: ./web
+            dockerfile: Dockerfile.playwright
+        restart: unless-stopped
+        volumes:
+            - ./web:/app
+            - node_modules_playwright:/app/node_modules
+        environment:
+            - WEB_BASE_URL=http://web:3000
+        command: tail -f /dev/null
+        networks:
+            - template
+        depends_on:
+            - web
+        shm_size: 2gb
+volumes:
+    node_modules_playwright:
+networks:
+    template:
+        name: template
+        external: true

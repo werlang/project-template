@@ -1,0 +1,11 @@
+.env
+.DS_Store
+node_modules/
+tests/coverage/
+test-results/
+playwright-report/
+web/public/js/
+web/public/css/
+web/public/assets/generated/
+api/upload/
+npm-debug.log*

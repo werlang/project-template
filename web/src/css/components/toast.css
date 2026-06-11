@@ -1,0 +1,31 @@
+#toast-container {
+    position: fixed;
+    right: var(--space-5);
+    bottom: var(--space-5);
+    display: grid;
+    gap: var(--space-3);
+    z-index: 10;
+}
+
+.toast {
+    max-width: min(360px, calc(100vw - 32px));
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-background-dark);
+    color: var(--color-text-inverse);
+    box-shadow: var(--shadow-md);
+    transition: 240ms ease;
+
+    &.success {
+        background: var(--color-success);
+    }
+
+    &.error {
+        background: var(--color-error);
+    }
+
+    &.fade {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+}
