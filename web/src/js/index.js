@@ -24,6 +24,8 @@ const refreshButton = new Button({
 });
 const lastRefresh = new LocalData({ id: 'template:last-refresh' });
 
+Toast.consumeFlash();
+
 /**
  * Loads and renders sample items through the frontend model boundary.
  */
@@ -53,15 +55,18 @@ async function checkApi() {
     }
 }
 
-itemForm.submit(async data => {
-    if (!data.name) {
-        new Toast('Name is required.', { type: 'error' });
+itemForm.submit(async (data, validation) => {
+    if (validation.fail.total) {
+        new Toast(validation.fail.messages.name || 'Please check the form fields.', {
+            tone: 'error',
+            group: 'item-form-validation',
+        });
         return;
     }
 
     await new Item(data).create();
     itemForm.clear();
-    new Toast('Item created.', { type: 'success' });
+    new Toast('Item created.', { tone: 'success', group: 'item-form' });
     await loadItems();
 });
 

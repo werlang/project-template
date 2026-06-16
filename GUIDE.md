@@ -27,11 +27,11 @@ browser page script -> frontend components/helpers/models -> API routes -> API m
 - instantiate DOM component classes,
 - wire high-level user flows.
 
-`web/src/js/components/` contains DOM-owning classes. Components are the only browser classes that should query, mutate, or render DOM elements directly.
+`web/src/js/components/` contains DOM-owning classes. Components are the only browser classes that should query, mutate, or render DOM elements directly. Reuse the shared `Form`, `Input`, `Select`, and `Toast` components for guarded submits, field validation, autosave, and transient UI messages instead of rebuilding those flows in page entries.
 
 `web/src/js/model/` contains frontend entity classes. Frontend models are the only browser classes that should call API endpoints.
 
-`web/src/js/helpers/` contains browser support code such as `Api`, `Request`, `LocalData`, and `TemplateVar`.
+`web/src/js/helpers/` contains browser support code such as `Api`, `Request`, `LocalData`, and `TemplateVar`. Keep timeout handling, content-type parsing, and API error mapping in `Request`/`Api` so frontend models can stay focused on endpoint contracts.
 
 `web/src/css/tokens.css` owns global tokens, spacing, radii, shadows, and color variables. `web/src/css/base.css` owns the shared font imports, reset rules, and default element styles. Page CSS files import `tokens.css` and `base.css` first, then the component partials they need.
 
@@ -52,7 +52,7 @@ Routes should:
 
 `api/model/` contains entity classes. These classes own persistence, table field maps, allowed update fields, and entity-specific business behavior.
 
-`api/helpers/mysql.js` is the only place that builds SQL. Models call CRUD-shaped helper methods such as `find`, `get`, `insert`, `update`, and `delete`.
+`api/helpers/mysql.js` is the only place that builds SQL. Models call CRUD-shaped helper methods such as `find`, `findOne`, `get`, `insert`, `upsert`, `update`, and `delete`, and use helper utilities such as transactions, raw fragments, date formatting, and database dumps without moving SQL construction into models.
 
 `api/middleware/auth.js` provides JWT bearer authentication and bcrypt password login support. Keep authentication reusable and route-independent.
 
