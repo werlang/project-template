@@ -12,7 +12,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
     width: 100%;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
@@ -23,6 +24,12 @@ textarea {
     &:focus {
         outline: 2px solid color-mix(in srgb, var(--color-main) 35%, transparent 65%);
         border-color: var(--color-main);
+    }
+
+    &.error,
+    &[aria-invalid='true'] {
+        border-color: var(--color-error);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-error) 20%, transparent 80%);
     }
 }
 

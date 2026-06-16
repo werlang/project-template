@@ -22,6 +22,8 @@ Use this skill for changes under `web/`.
 
 - Treat pages as server-rendered first and browser-enhanced second.
 - Page entry files wire components, models, and helpers together; they should not become API clients or DOM component libraries.
+- Reuse `Form`, `Input`, `Select`, and `Toast` for form state, validation, autosave, and notifications before adding one-off DOM logic.
+- Keep timeout handling, content-type parsing, and API error mapping inside `Request`/`Api`.
 - Use `TemplateVar` for server-provided runtime config.
 - Use frontend models for API calls.
 - Keep Webpack entries aligned with page entry files.

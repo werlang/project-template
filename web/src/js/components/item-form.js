@@ -1,4 +1,4 @@
-import Button from './button.js';
+import Form from './form.js';
 
 /**
  * DOM component for the sample item form.
@@ -8,9 +8,12 @@ export default class ItemForm {
      * @param {{ element: HTMLFormElement }} options
      */
     constructor({ element }) {
-        this.element = element;
-        this.submitButton = new Button({
-            element: element.querySelector('button[type="submit"]'),
+        this.form = new Form(element, {
+            autoSave: {
+                enabled: true,
+                key: 'template:item-form-draft',
+                include: ['name', 'description'],
+            },
         });
     }
 
@@ -20,10 +23,10 @@ export default class ItemForm {
      * @returns {{ name: string, description: string }}
      */
     getData() {
-        const data = new FormData(this.element);
+        const data = this.form.getData();
         return {
-            name: String(data.get('name') || '').trim(),
-            description: String(data.get('description') || '').trim(),
+            name: String(data.name || '').trim(),
+            description: String(data.description || '').trim(),
         };
     }
 
@@ -31,8 +34,7 @@ export default class ItemForm {
      * Resets the form inputs.
      */
     clear() {
-        this.element.reset();
-        this.element.querySelector('input, textarea')?.focus();
+        this.form.clear();
     }
 
     /**
@@ -41,15 +43,20 @@ export default class ItemForm {
      * @param {(data: { name: string, description: string }) => Promise<void>|void} callback
      */
     submit(callback) {
-        this.element.addEventListener('submit', async event => {
-            event.preventDefault();
-            try {
-                this.submitButton.disable();
-                await callback(this.getData());
+        this.form.submit(async () => {
+            const validation = this.form.validate([
+                {
+                    id: 'name',
+                    rule: value => String(value || '').trim().length > 0,
+                    message: 'Name is required.',
+                },
+            ]);
+
+            if (validation.fail.total) {
+                return callback(this.getData(), validation);
             }
-            finally {
-                this.submitButton.enable();
-            }
+
+            return callback(this.getData(), validation);
         });
     }
 }
