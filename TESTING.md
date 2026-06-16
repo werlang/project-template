@@ -16,7 +16,7 @@ Unit tests mock the MySQL helper or model dependencies. Integration tests run ag
 The web service includes a small Playwright smoke test suite in `web/tests/`. Use the Playwright overlay so browser dependencies stay out of the normal web image.
 
 ```bash
-docker compose -f compose.local.yaml -f compose.playwright.yaml up -d playwright
+docker compose -f compose.dev.yaml -f compose.playwright.yaml up -d playwright
 docker exec template-playwright-1 npx playwright test
 ```
 

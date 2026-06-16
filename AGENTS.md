@@ -6,7 +6,7 @@ This repository is a generic Node/Express web/API template. Preserve the service
 
 - Human documentation: `README.md`, `GUIDE.md`, `TESTING.md`
 - Project-local skills: `.agents/skills/*/SKILL.md`
-- Runtime config: `.env.example`, `compose.yaml`, `compose.local.yaml`
+- Runtime config: `.env.example`, `compose.yaml`, `compose.dev.yaml`
 
 ## Working Rules
 
@@ -22,7 +22,7 @@ This repository is a generic Node/Express web/API template. Preserve the service
 
 ## Default Validation
 
-- API unit: `docker exec template-api-1 sh -c "NODE_ENV=test npm test -- --config jest.unit.config.mjs"`
-- API integration: `docker exec template-api-1 sh -c "NODE_ENV=test npm test -- --config jest.integration.config.mjs"`
+- API unit: `docker exec template-api-1 sh -c "NODE_ENV=test npm run test:unit"`
+- API integration: `docker exec template-api-1 sh -c "NODE_ENV=test npm run test:integration"`
 - Web build: `docker exec template-web-1 npm run build`
-- Browser smoke: `docker compose -f compose.local.yaml -f compose.playwright.yaml up -d playwright` then `docker exec template-playwright-1 npx playwright test`
+- Browser smoke: `docker compose -f compose.dev.yaml -f compose.playwright.yaml up -d playwright` then `docker exec template-playwright-1 npx playwright test`

@@ -35,7 +35,7 @@ browser page script -> frontend components/helpers/models -> API routes -> API m
 
 `web/src/css/tokens.css` owns global tokens, spacing, radii, shadows, and color variables. `web/src/css/base.css` owns the shared font imports, reset rules, and default element styles. Page CSS files import `tokens.css` and `base.css` first, then the component partials they need.
 
-Browser smoke tests run through `compose.playwright.yaml`, which uses a Playwright image, reaches the web service at `http://web:3000` inside the Docker network, and overrides the web runtime `API_URL` to `http://api:3000` for container-to-container browser requests.
+Browser smoke tests run through `compose.playwright.yaml` on top of `compose.dev.yaml`. The Playwright overlay uses a Playwright image, reaches the web service at `http://web:3000` inside the Docker network, and overrides the web runtime `API_URL` to `http://api:3000` for container-to-container browser requests.
 
 ## API Service
 

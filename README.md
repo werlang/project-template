@@ -11,7 +11,7 @@ The template intentionally removes AutoJudge-specific judging, contest, editor, 
 
 ```bash
 cp .env.example .env
-docker compose -f compose.local.yaml up -d --build
+docker compose -f compose.dev.yaml up -d --build
 ```
 
 Open:
@@ -23,7 +23,7 @@ Open:
 
 ```bash
 # Start the local stack
-docker compose -f compose.local.yaml up -d --build
+docker compose -f compose.dev.yaml up -d --build
 
 # API unit tests
 docker exec template-api-1 sh -c "NODE_ENV=test npm run test:unit"
@@ -35,7 +35,7 @@ docker exec template-api-1 sh -c "NODE_ENV=test npm run test:integration"
 docker exec template-web-1 npm run build
 
 # Browser smoke tests
-docker compose -f compose.local.yaml -f compose.playwright.yaml up -d playwright
+docker compose -f compose.dev.yaml -f compose.playwright.yaml up -d playwright
 docker exec template-playwright-1 npx playwright test
 ```
 

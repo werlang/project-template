@@ -7,7 +7,7 @@ services:
         restart: unless-stopped
         env_file:
             - .env
-        command: npm run ${NODE_ENV:-development}
+        command: npm run production
         networks:
             - template
         depends_on:
@@ -20,7 +20,7 @@ services:
         volumes:
             - ./api:/app
             - node_modules_api:/app/node_modules
-        command: npm run ${NODE_ENV:-development}
+        command: npm run production
         networks:
             - template
         depends_on:
