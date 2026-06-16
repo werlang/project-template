@@ -6,12 +6,13 @@ import TemplateVar from './template-var.js';
  */
 export default class Api {
     /**
-     * @param {{ token?: string, auth?: boolean, options?: Record<string, unknown> }} config
+     * @param {{ token?: string, auth?: boolean, options?: Record<string, unknown>, timeout?: number }} config
      */
-    constructor({ token, auth = false, options } = {}) {
+    constructor({ token, auth = false, options, timeout } = {}) {
         this.token = token;
         this.auth = auth;
         this.options = options || {};
+        this.timeout = timeout;
         this.requestInstance = this.setInstance();
     }
 
@@ -30,22 +31,23 @@ export default class Api {
             url: TemplateVar.get('apiurl'),
             headers,
             options: this.options,
+            timeout: this.timeout,
         });
     }
 
-    get(endpoint, data) {
-        return this.requestInstance.get(endpoint, data);
+    get(endpoint, data, options) {
+        return this.requestInstance.get(endpoint, data, options);
     }
 
-    post(endpoint, data) {
-        return this.requestInstance.post(endpoint, data);
+    post(endpoint, data, options) {
+        return this.requestInstance.post(endpoint, data, options);
     }
 
-    put(endpoint, data) {
-        return this.requestInstance.put(endpoint, data);
+    put(endpoint, data, options) {
+        return this.requestInstance.put(endpoint, data, options);
     }
 
-    delete(endpoint, data) {
-        return this.requestInstance.delete(endpoint, data);
+    delete(endpoint, data, options) {
+        return this.requestInstance.delete(endpoint, data, options);
     }
 }
