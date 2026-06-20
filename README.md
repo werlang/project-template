@@ -1,11 +1,11 @@
 # Generic Web/API Template
 
-This repository is a generic starter based on the `aj-private` project architecture. It keeps the same two main service boundaries:
+This repository is a standalone Node/Express template for building server-rendered web apps backed by a JSON API and MySQL. It is designed to be forked for new projects while keeping two clear service boundaries:
 
 - `web/`: Express server-rendered pages with Mustache, render middleware, Webpack-built page bundles, DOM components, frontend helpers, and API-backed frontend models.
 - `api/`: Express JSON API with routers, middleware, entity model classes, and a MySQL helper that owns all SQL construction.
 
-The template intentionally removes AutoJudge-specific judging, contest, editor, PDF, Cloudflare, and production-domain content.
+The checked-in sample `items` flow is intentionally small so new projects can replace it with their own domain entities without first removing product-specific behavior.
 
 ## Quick Start
 
