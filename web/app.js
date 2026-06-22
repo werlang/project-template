@@ -1,5 +1,4 @@
 import express from 'express';
-import mustacheExpress from 'mustache-express';
 import cookieParser from 'cookie-parser';
 import renderMiddleware from './middleware/render.js';
 
@@ -12,8 +11,6 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.engine('html', mustacheExpress());
-app.set('view engine', 'html');
 app.set('views', `${import.meta.dirname}/view/`);
 
 app.use(renderMiddleware({
@@ -22,11 +19,16 @@ app.use(renderMiddleware({
     year: new Date().getFullYear(),
 }));
 
-app.get('/', (req, res) => {
-    res.templateRender('index', {
-        pageTitle: 'Template App',
-        heading: 'Template App',
-    });
+app.get('/', async (req, res, next) => {
+    try {
+        await res.render('index', {
+            pageTitle: 'Template App',
+            heading: 'Template App',
+        });
+    }
+    catch (error) {
+        next(error);
+    }
 });
 
 app.get('/ready', (req, res) => {
@@ -39,11 +41,16 @@ app.get('/health', (req, res) => {
 
 app.use(express.static(`${import.meta.dirname}/public/`));
 
-app.use((req, res) => {
-    res.status(404).templateRender('notfound', {
-        pageTitle: 'Page not found',
-        heading: 'Page not found',
-    });
+app.use(async (req, res, next) => {
+    try {
+        await res.status(404).render('notfound', {
+            pageTitle: 'Page not found',
+            heading: 'Page not found',
+        });
+    }
+    catch (error) {
+        next(error);
+    }
 });
 
 if (process.env.NODE_ENV !== 'test') {

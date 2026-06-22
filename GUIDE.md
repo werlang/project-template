@@ -18,7 +18,7 @@ browser page script -> frontend components/helpers/models -> API routes -> API m
 
 `web/app.js` composes the Express server, templates, static files, and render middleware.
 
-`web/middleware/render.js` adds `res.templateRender(view, vars)`. It injects server values into a `<script id="template-vars" type="application/json">` tag. Browser code reads those values through `TemplateVar`.
+`web/middleware/render.js` adds the async helpers `res.templateRender(view, vars, languageNamespaces)` and `res.render(...)`. The middleware reads Mustache templates directly from `web/view/`, merges fixed server vars with per-route vars, optionally injects those values into the `<script id="template-vars" type="application/json">` tag, and exposes `res.clearRenderCache(view?)` for cache-aware development flows. Browser code reads the injected values through `TemplateVar`.
 
 `web/src/js/index.js` is the sample page entry. Page entry files should orchestrate work only:
 

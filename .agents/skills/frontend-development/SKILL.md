@@ -10,7 +10,7 @@ Use this skill for changes under `web/`.
 ## Structure
 
 - `web/app.js`: Express server, template routes, static assets, render middleware.
-- `web/middleware/render.js`: server-to-browser runtime values through `template-vars`.
+- `web/middleware/render.js`: async template rendering, optional server-to-browser runtime values through `template-vars`, and view-template caching.
 - `web/src/js/*.js`: page entry files that orchestrate the page.
 - `web/src/js/components/`: the only browser classes that query, render, or mutate DOM.
 - `web/src/js/model/`: the only browser classes that call API endpoints.
@@ -24,7 +24,7 @@ Use this skill for changes under `web/`.
 - Page entry files wire components, models, and helpers together; they should not become API clients or DOM component libraries.
 - Reuse `Form`, `Input`, `Select`, and `Toast` for form state, validation, autosave, and notifications before adding one-off DOM logic.
 - Keep timeout handling, content-type parsing, and API error mapping inside `Request`/`Api`.
-- Use `TemplateVar` for server-provided runtime config.
+- Use `TemplateVar` for server-provided runtime config when the render middleware instance sends vars to the browser.
 - Use frontend models for API calls.
 - Keep Webpack entries aligned with page entry files.
 - Load fonts through CSS `@import` in `web/src/css/base.css` and keep page CSS files slim composition layers.

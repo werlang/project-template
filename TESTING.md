@@ -5,8 +5,8 @@
 The API uses Vitest with separate unit and integration configs.
 
 ```bash
-docker exec template-api-1 sh -c "NODE_ENV=test npm run test:unit"
-docker exec template-api-1 sh -c "NODE_ENV=test npm run test:integration"
+docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:unit"
+docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:integration"
 ```
 
 Unit tests mock the MySQL helper or model dependencies. Integration tests run against the composed MySQL service and reset sample data before each test file.
@@ -17,7 +17,13 @@ The web service includes a small Playwright smoke test suite in `web/tests/`. Us
 
 ```bash
 docker compose -f compose.dev.yaml -f compose.playwright.yaml up -d playwright
-docker exec template-playwright-1 npx playwright test
+docker compose -f compose.dev.yaml -f compose.playwright.yaml exec playwright npx playwright test
+```
+
+For focused server-render tests around `web/middleware/render.js`, run the Node test directly inside the web service:
+
+```bash
+docker compose -f compose.dev.yaml exec web node --test tests/render.test.js
 ```
 
 For visual or interaction-heavy changes, use Playwright as a first pass and then manually check the browser when layout, focus, or responsive behavior matters.
@@ -27,7 +33,7 @@ For visual or interaction-heavy changes, use Playwright as a first pass and then
 Run a production web bundle before shipping frontend changes:
 
 ```bash
-docker exec template-web-1 npm run build
+docker compose -f compose.dev.yaml exec web npm run build
 ```
 
 The build emits assets into `web/public/js/` and `web/public/css/`.

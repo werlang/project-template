@@ -22,7 +22,7 @@ This repository is a generic Node/Express web/API template. Preserve the service
 
 ## Default Validation
 
-- API unit: `docker exec template-api-1 sh -c "NODE_ENV=test npm run test:unit"`
-- API integration: `docker exec template-api-1 sh -c "NODE_ENV=test npm run test:integration"`
-- Web build: `docker exec template-web-1 npm run build`
-- Browser smoke: `docker compose -f compose.dev.yaml -f compose.playwright.yaml up -d playwright` then `docker exec template-playwright-1 npx playwright test`
+- API unit: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:unit"`
+- API integration: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:integration"`
+- Web build: `docker compose -f compose.dev.yaml exec web npm run build`
+- Browser smoke: `docker compose -f compose.dev.yaml -f compose.playwright.yaml up -d playwright` then `docker compose -f compose.dev.yaml -f compose.playwright.yaml exec playwright npx playwright test`
