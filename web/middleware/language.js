@@ -5,9 +5,16 @@ import fs from 'fs/promises';
 const languageMiddleware = {
 
     fallbackLng: 'en',
+    supportedLanguages: ['en', 'pt'],
 
     // Function to load a single translation file
     loadLocale: async function(lng, ns) {
+        if (i18next.isInitialized) {
+            const bundle = i18next.getResourceBundle(lng, ns);
+            if (bundle) {
+                return { [lng]: { [ns]: bundle } };
+            }
+        }
         const filePath = path.join(import.meta.dirname, '../locales/', lng, `${ns}.json`);
         try {
             const content = await fs.readFile(filePath, 'utf8');
@@ -15,7 +22,7 @@ const languageMiddleware = {
             return { [lng]: { [ns]: file } };
         }
         catch (error) {
-            console.error(`Could not load translation file for ${lng} at ${filePath}`);
+            console.error(`Could not load translation file for ${lng} at ${filePath}: ${error.message}`);
             return { [lng]: { [ns]: {} } };
         }
     },
@@ -40,29 +47,31 @@ const languageMiddleware = {
     },
 
     init: async function({languages, namespaces}) {
-        i18next.init({
+        await i18next.init({
             fallbackLng: this.fallbackLng,
+            supportedLngs: this.supportedLanguages,
             resources: await this.loadLocales(languages, namespaces),
             // debug: true,
         });
     },
 
-    listen: function() {
-        return async (req, res, next) => {
-            // check if there are language cookies
-            if (req.cookies.language) {
-                req.language = req.cookies.language;
-            }
-            else {
-                const header = req.headers['accept-language'];
-                const language = header ? header.split(',')[0].split('-')[0] : this.fallbackLng;
-                req.language = i18next.hasResourceBundle(language) ? language : this.fallbackLng;
-            }
-            
-            i18next.changeLanguage(req.language);
-            res.locals.t = i18next.t.bind(i18next);
-            next();
+    detectLanguage: function(req) {
+        const cookieLanguage = req.cookies?.language;
+        if (this.supportedLanguages.includes(cookieLanguage)) {
+            return cookieLanguage;
         }
+
+        const headerLanguage = req.acceptsLanguages?.(this.supportedLanguages);
+        return headerLanguage || this.fallbackLng;
+    },
+
+    listen: function() {
+        return (req, res, next) => {
+            req.language = this.detectLanguage(req);
+            req.t = i18next.getFixedT(req.language);
+            res.locals.t = req.t;
+            next();
+        };
     },
 
 }
