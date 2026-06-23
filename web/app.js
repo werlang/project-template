@@ -21,7 +21,7 @@ app.use(renderMiddleware({
 
 app.get('/', async (req, res, next) => {
     try {
-        await res.render('index', {
+        await res.templateRender('index', {
             pageTitle: 'Template App',
             heading: 'Template App',
         });
@@ -43,7 +43,7 @@ app.use(express.static(`${import.meta.dirname}/public/`));
 
 app.use(async (req, res, next) => {
     try {
-        await res.status(404).render('notfound', {
+        await res.status(404).templateRender('notfound', {
             pageTitle: 'Page not found',
             heading: 'Page not found',
         });

@@ -28,15 +28,53 @@ const loadLanguageMiddleware = async () => {
  * @param {Record<string, any>} translations
  * @returns {Record<string, string>}
  */
-const flattenTranslations = (translations) => {
+export const flattenTranslations = (translations) => {
     const flattened = {};
+
+    const recurse = (obj, prefix) => {
+        for (const key in obj) {
+            const val = obj[key];
+            const currentKey = `${prefix}.${key}`;
+            if (val && typeof val === 'object' && !Array.isArray(val)) {
+                recurse(val, currentKey);
+            } else {
+                flattened[currentKey] = val;
+            }
+        }
+    };
+
     for (const ns in translations) {
         const nsObj = translations[ns];
-        for (const key in nsObj) {
-            flattened[`${ns}:${key}`] = nsObj[key];
+        if (nsObj && typeof nsObj === 'object' && !Array.isArray(nsObj)) {
+            for (const key in nsObj) {
+                const val = nsObj[key];
+                const nsKey = `${ns}:${key}`;
+                if (val && typeof val === 'object' && !Array.isArray(val)) {
+                    recurse(val, nsKey);
+                } else {
+                    flattened[nsKey] = val;
+                }
+            }
+        } else {
+            flattened[ns] = nsObj;
         }
     }
     return flattened;
+};
+
+/**
+ * Safely stringifies an object for embedding in a <script> tag to prevent XSS.
+ *
+ * @param {any} obj
+ * @returns {string}
+ */
+export const safeJsonStringify = (obj) => {
+    return JSON.stringify(obj)
+        .replace(/</g, '\\u003c')
+        .replace(/>/g, '\\u003e')
+        .replace(/&/g, '\\u0026')
+        .replace(/\u2028/g, '\\u2028')
+        .replace(/\u2029/g, '\\u2029');
 };
 
 /**
@@ -53,6 +91,7 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
         ...options,
     };
     const templateCache = new Map();
+    let cachedPartials = null;
     let languageMiddlewarePromise;
 
     /**
@@ -85,10 +124,14 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
         if (view) {
             const templatePath = path.join(VIEW_PATH, `${view}.html`);
             templateCache.delete(templatePath);
+            if (cachedPartials) {
+                delete cachedPartials[view];
+            }
             return;
         }
 
         templateCache.clear();
+        cachedPartials = null;
     };
 
     /**
@@ -97,6 +140,10 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
      * @returns {Promise<Record<string, string>>}
      */
     const loadPartials = async () => {
+        if (renderOptions.cache && cachedPartials) {
+            return cachedPartials;
+        }
+
         const files = await fs.readdir(VIEW_PATH);
         const partials = {};
         for (const file of files) {
@@ -105,6 +152,11 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
                 partials[name] = await readTemplate(name);
             }
         }
+
+        if (renderOptions.cache) {
+            cachedPartials = partials;
+        }
+
         return partials;
     };
 
@@ -143,7 +195,7 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
 
                 const clientVars = renderOptions.sendToClient
                     ? {
-                        'template-vars': `<script id="template-vars" type="application/json">${JSON.stringify({
+                        'template-vars': `<script id="template-vars" type="application/json">${safeJsonStringify({
                             ...viewVars,
                             translations,
                         })}</script>`,
@@ -160,7 +212,6 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
                 res.send(rendered);
             };
 
-            res.render = res.templateRender;
             res.clearRenderCache = clearRenderCache;
             next();
         };
