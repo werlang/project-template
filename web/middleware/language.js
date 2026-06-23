@@ -2,6 +2,8 @@ import i18next from 'i18next';
 import path from 'path';
 import fs from 'fs/promises';
 
+const LOCALE_PATH = path.join(import.meta.dirname, '../locales');
+
 const languageMiddleware = {
 
     fallbackLng: 'en',
@@ -15,7 +17,7 @@ const languageMiddleware = {
                 return { [lng]: { [ns]: bundle } };
             }
         }
-        const filePath = path.join(import.meta.dirname, '../locales/', lng, `${ns}.json`);
+        const filePath = path.join(LOCALE_PATH, lng, `${ns}.json`);
         try {
             const content = await fs.readFile(filePath, 'utf8');
             const file = JSON.parse(content);
