@@ -1,7 +1,7 @@
 /**
  * Error type used by frontend request helpers.
  */
-export default class CustomError extends Error {
+export class CustomError extends Error {
     /**
      * @param {number} code
      * @param {string} message

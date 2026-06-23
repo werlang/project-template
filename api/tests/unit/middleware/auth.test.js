@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 let mockUserRecord;
 
 vi.mock('../../../model/user.js', () => ({
-    default: class User {
+    User: class User {
         constructor(fields = {}) {
             Object.assign(this, fields);
         }
@@ -30,7 +30,7 @@ vi.mock('jsonwebtoken', () => ({
 
 const bcrypt = (await import('bcrypt')).default;
 const jwt = (await import('jsonwebtoken')).default;
-const auth = (await import('../../../middleware/auth.js')).default;
+const auth = (await import('../../../middleware/auth.js')).auth;
 
 describe('auth middleware', () => {
     beforeEach(() => {

@@ -1,7 +1,7 @@
 /**
  * Converts thrown errors into the API's JSON error response format.
  */
-export default (err, req, res, next) => {
+export const errorMiddleware = (err, req, res, next) => {
     if (!err) {
         next();
         return;

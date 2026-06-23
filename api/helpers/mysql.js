@@ -1,11 +1,11 @@
 import mysql from 'mysql2/promise';
 import mysqldump from 'mysqldump';
-import CustomError from './error.js';
+import { CustomError } from './error.js';
 
 /**
  * Shared MySQL driver helper. Models are the only normal production callers.
  */
-export default class Mysql {
+export class Mysql {
     static connected = false;
     static connection = null;
     static #rawSqlSentinel = Symbol('raw-sql-fragment');

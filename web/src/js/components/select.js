@@ -1,9 +1,9 @@
-import BaseComponent from './base-component.js';
+import { BaseComponent } from './base-component.js';
 
 /**
  * Native select wrapper with the same validation and event API as Input.
  */
-export default class Select extends BaseComponent {
+export class Select extends BaseComponent {
     /**
      * @param {HTMLSelectElement} element
      */

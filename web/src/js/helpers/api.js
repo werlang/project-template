@@ -1,10 +1,10 @@
-import Request from './request.js';
-import TemplateVar from './template-var.js';
+import { Request } from './request.js';
+import { TemplateVar } from './template-var.js';
 
 /**
  * API client factory used by frontend models.
  */
-export default class Api {
+export class Api {
     /**
      * @param {{ token?: string, auth?: boolean, options?: Record<string, unknown>, timeout?: number }} config
      */

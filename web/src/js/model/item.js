@@ -1,9 +1,9 @@
-import Api from '../helpers/api.js';
+import { Api } from '../helpers/api.js';
 
 /**
  * Frontend model for the sample item API resource.
  */
-export default class Item {
+export class Item {
     /**
      * @param {{ id?: number, name?: string, description?: string }} fields
      */

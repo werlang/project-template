@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import auth from '../middleware/auth.js';
-import CustomError from '../helpers/error.js';
-import Item from '../model/item.js';
+import { auth } from '../middleware/auth.js';
+import { CustomError } from '../helpers/error.js';
+import { Item } from '../model/item.js';
 
 const router = Router();
 
@@ -91,4 +91,4 @@ router.delete('/:id', auth({ 'user:optional': true }), async (req, res, next) =>
     }
 });
 
-export default router;
+export const itemsRouter = router;

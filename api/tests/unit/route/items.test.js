@@ -18,14 +18,14 @@ const createdItem = {
 };
 
 vi.mock('../../../middleware/auth.js', () => ({
-    default: () => (req, res, next) => {
+    auth: () => (req, res, next) => {
         req.user = null;
         next();
     },
 }));
 
 vi.mock('../../../model/item.js', () => ({
-    default: class Item {
+    Item: class Item {
         constructor(fields = {}) {
             Object.assign(this, fields);
         }
@@ -59,7 +59,7 @@ vi.mock('../../../model/item.js', () => ({
     },
 }));
 
-const itemsRouter = (await import('../../../route/items.js')).default;
+const itemsRouter = (await import('../../../route/items.js')).itemsRouter;
 
 function getRouteHandlers(method, path) {
     const routeMethod = method.toLowerCase();

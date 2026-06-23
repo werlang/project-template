@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('../../../helpers/mysql.js', () => ({
-    default: {
+    Mysql: {
         insert: vi.fn(),
         find: vi.fn(),
         update: vi.fn(),
@@ -9,8 +9,8 @@ vi.mock('../../../helpers/mysql.js', () => ({
     },
 }));
 
-const Db = (await import('../../../helpers/mysql.js')).default;
-const Model = (await import('../../../model/model.js')).default;
+const Db = (await import('../../../helpers/mysql.js')).Mysql;
+const Model = (await import('../../../model/model.js')).Model;
 
 describe('Model base class', () => {
     let model;

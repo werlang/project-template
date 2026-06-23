@@ -1,9 +1,9 @@
-import Model from './model.js';
+import { Model } from './model.js';
 
 /**
  * Sample entity showing how project models should wrap persistence.
  */
-export default class Item extends Model {
+export class Item extends Model {
     /**
      * @param {{ id?: number, name?: string, description?: string, owner?: number, created_at?: string }} fields
      */

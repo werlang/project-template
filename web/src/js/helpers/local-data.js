@@ -1,7 +1,7 @@
 /**
  * Small localStorage wrapper with optional expiration support.
  */
-export default class LocalData {
+export class LocalData {
     /**
      * @param {{ id?: string, data?: unknown, expires?: string|number|Date|false }} options
      */

@@ -1,4 +1,4 @@
-import BaseComponent from './base-component.js';
+import { BaseComponent } from './base-component.js';
 
 const DEFAULT_DURATION = 5000;
 const FADE_OFFSET_MS = 100;
@@ -124,7 +124,7 @@ function resolveToastContainer(position) {
 /**
  * DOM component for accessible, dismissible transient messages.
  */
-export default class Toast extends BaseComponent {
+export class Toast extends BaseComponent {
     #container;
     #title;
     #body;

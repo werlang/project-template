@@ -1,8 +1,8 @@
 import request from 'supertest';
 import { afterAll, beforeEach, describe, expect, test } from 'vitest';
-import Mysql from '../../helpers/mysql.js';
-import User from '../../model/user.js';
-import app from '../../app.js';
+import { Mysql } from '../../helpers/mysql.js';
+import { User } from '../../model/user.js';
+import { app } from '../../app.js';
 
 async function resetWithRetry(attempts = 20) {
     for (let attempt = 1; attempt <= attempts; attempt++) {

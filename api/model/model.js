@@ -1,11 +1,11 @@
-import CustomError from '../helpers/error.js';
-import Db from '../helpers/mysql.js';
-import Relation from './relation.js';
+import { CustomError } from '../helpers/error.js';
+import { Mysql as Db } from '../helpers/mysql.js';
+import { Relation } from './relation.js';
 
 /**
  * Base entity model that wraps generic CRUD behavior.
  */
-export default class Model {
+export class Model {
     #allowUpdate = [];
     #insertFields = [];
     #sanitizeFields = [];

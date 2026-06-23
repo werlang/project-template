@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import renderMiddleware from '../middleware/render.js';
+import { renderMiddleware } from '../middleware/render.js';
 
 const attachMiddleware = ({ fixedVars = {}, options = {}, req = {} } = {}) => {
     const middleware = renderMiddleware(fixedVars, options);

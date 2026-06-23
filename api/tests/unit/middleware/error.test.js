@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from 'vitest';
-import errorMiddleware from '../../../middleware/error.js';
-import CustomError from '../../../helpers/error.js';
+import { errorMiddleware } from '../../../middleware/error.js';
+import { CustomError } from '../../../helpers/error.js';
 
 describe('error middleware', () => {
     test('formats CustomError responses', () => {

@@ -1,7 +1,7 @@
 /**
  * DOM component that renders the sample item collection.
  */
-export default class ItemList {
+export class ItemList {
     /**
      * @param {{ element: HTMLElement }} options
      */

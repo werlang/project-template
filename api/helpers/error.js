@@ -1,7 +1,7 @@
 /**
  * API error with an HTTP status code and optional details.
  */
-export default class CustomError extends Error {
+export class CustomError extends Error {
     /**
      * @param {number} code
      * @param {string} message

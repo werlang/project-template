@@ -1,35 +1,34 @@
 /**
- * Reads server-rendered runtime values from the `template-vars` script tag.
+ * TemplateVar
+ * Reads server-injected template variables from the DOM.
+ *
+ * Usage:
+ *   const value = TemplateVar.get('variableName');
  */
-export default class TemplateVar {
+
+export class TemplateVar {
+
     static vars = {};
     static isBuilt = false;
 
-    /**
-     * Parses and removes the runtime variable script tag.
-     */
     static build() {
         const script = document.querySelector('#template-vars');
         if (!script) return;
 
         try {
-            TemplateVar.vars = JSON.parse(script.textContent || '{}');
-        }
+            const vars = JSON.parse(script.textContent || '{}');
+            Object.entries(vars).forEach(([key, value]) => {
+                TemplateVar.vars[key] = value;
+            });
+        }   
         catch (error) {
-            console.error('Error parsing template variables:', error);
-            TemplateVar.vars = {};
+            console.error('Error parsing template variable:', error);
         }
 
         script.remove();
         TemplateVar.isBuilt = true;
     }
 
-    /**
-     * Returns one runtime value, or the full runtime object when no key is provided.
-     *
-     * @param {string} key
-     * @returns {unknown}
-     */
     static get(key) {
         if (!TemplateVar.isBuilt) {
             TemplateVar.build();
@@ -39,4 +38,9 @@ export default class TemplateVar {
         }
         return TemplateVar.vars[key];
     }
+
+    static set(key, value) {
+        TemplateVar.vars[key] = value;
+    }
+
 }

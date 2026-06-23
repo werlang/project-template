@@ -1,9 +1,9 @@
-import BaseComponent from './base-component.js';
+import { BaseComponent } from './base-component.js';
 
 /**
  * Lightweight form-field wrapper for inputs and textareas.
  */
-export default class Input extends BaseComponent {
+export class Input extends BaseComponent {
     /**
      * @param {HTMLInputElement|HTMLTextAreaElement} element
      */

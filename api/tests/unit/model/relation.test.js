@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('../../../helpers/mysql.js', () => ({
-    default: {
+    Mysql: {
         find: vi.fn(),
         insert: vi.fn(),
         update: vi.fn(),
@@ -9,8 +9,8 @@ vi.mock('../../../helpers/mysql.js', () => ({
     },
 }));
 
-const Db = (await import('../../../helpers/mysql.js')).default;
-const Relation = (await import('../../../model/relation.js')).default;
+const Db = (await import('../../../helpers/mysql.js')).Mysql;
+const Relation = (await import('../../../model/relation.js')).Relation;
 
 describe('Relation model helper', () => {
     let relation;

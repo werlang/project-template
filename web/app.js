@@ -1,6 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import renderMiddleware from './middleware/render.js';
+import { renderMiddleware } from './middleware/render.js';
 
 const port = 3000;
 const host = '0.0.0.0';
@@ -59,4 +59,4 @@ if (process.env.NODE_ENV !== 'test') {
     });
 }
 
-export default app;
+export { app };

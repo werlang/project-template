@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import auth from '../middleware/auth.js';
+import { auth } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -16,4 +16,4 @@ router.post('/', auth({ 'user:password': true }), async (req, res, next) => {
     }
 });
 
-export default router;
+export const loginRouter = router;

@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
-import Model from './model.js';
+import { Model } from './model.js';
 
 /**
  * User entity used by the sample JWT login flow.
  */
-export default class User extends Model {
+export class User extends Model {
     /**
      * @param {{ id?: number, name?: string, email?: string, password?: string, created_at?: string }} fields
      */

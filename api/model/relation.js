@@ -1,10 +1,10 @@
-import CustomError from '../helpers/error.js';
-import Db from '../helpers/mysql.js';
+import { CustomError } from '../helpers/error.js';
+import { Mysql as Db } from '../helpers/mysql.js';
 
 /**
  * Helper for many-to-many relation tables.
  */
-export default class Relation {
+export class Relation {
     /**
      * @param {string} tableName
      * @param {Record<string, unknown>} nativeObject

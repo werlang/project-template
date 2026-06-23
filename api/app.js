@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import errorMiddleware from './middleware/error.js';
-import login from './route/login.js';
-import items from './route/items.js';
-import Mysql from './helpers/mysql.js';
+import { errorMiddleware } from './middleware/error.js';
+import { loginRouter as login } from './route/login.js';
+import { itemsRouter as items } from './route/items.js';
+import { Mysql } from './helpers/mysql.js';
 
 const port = 3000;
 const host = '0.0.0.0';
@@ -42,4 +42,4 @@ app.on('close', async () => {
     await Mysql.close();
 });
 
-export default app;
+export { app };

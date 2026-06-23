@@ -1,7 +1,7 @@
 /**
  * DOM component for async-safe buttons.
  */
-export default class Button {
+export class Button {
     /**
      * @param {{ element?: HTMLButtonElement, text?: string, icon?: string, title?: string }} options
      */

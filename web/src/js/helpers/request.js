@@ -1,9 +1,9 @@
-import CustomError from './error.js';
+import { CustomError } from './error.js';
 
 /**
  * Fetch wrapper with JSON defaults, timeout handling, and consistent error mapping.
  */
-export default class Request {
+export class Request {
     /**
      * @param {{ url?: string, baseURL?: string, headers?: HeadersInit, options?: Record<string, unknown>, timeout?: number }} config
      */

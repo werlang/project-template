@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import CustomError from '../helpers/error.js';
-import User from '../model/user.js';
+import { CustomError } from '../helpers/error.js';
+import { User } from '../model/user.js';
 
 const jwtSecret = () => process.env.JWT_SECRET || 'development-secret';
 
@@ -77,7 +77,7 @@ async function checkUserJWT(req) {
  * @param {Record<string, boolean|string>} modes
  * @returns {import('express').RequestHandler}
  */
-export default function auth(modes = {}) {
+export function auth(modes = {}) {
     return async (req, res, next) => {
         const modeHandlers = {
             'user:password': authUser,

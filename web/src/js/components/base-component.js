@@ -1,7 +1,7 @@
 /**
  * Small DOM component base that tracks event listeners for safe cleanup.
  */
-export default class BaseComponent {
+export class BaseComponent {
     #element;
     #subscriptions = [];
 

@@ -1,14 +1,14 @@
-import Button from './button.js';
-import Input from './input.js';
-import Select from './select.js';
-import LocalData from '../helpers/local-data.js';
+import { Button } from './button.js';
+import { Input } from './input.js';
+import { Select } from './select.js';
+import { LocalData } from '../helpers/local-data.js';
 
 const DEFAULT_AUTOSAVE_DELAY = 500;
 
 /**
  * Generic form component with grouped field reads, validation, autosave, and guarded submit.
  */
-export default class Form {
+export class Form {
     #submitHandler = null;
 
     /**

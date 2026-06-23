@@ -23,6 +23,23 @@ const loadLanguageMiddleware = async () => {
 };
 
 /**
+ * Helper to recursively flatten translations to ns:key.subkey notation.
+ *
+ * @param {Record<string, any>} translations
+ * @returns {Record<string, string>}
+ */
+const flattenTranslations = (translations) => {
+    const flattened = {};
+    for (const ns in translations) {
+        const nsObj = translations[ns];
+        for (const key in nsObj) {
+            flattened[`${ns}:${key}`] = nsObj[key];
+        }
+    }
+    return flattened;
+};
+
+/**
  * Adds a template-aware render helper that merges shared view variables with
  * per-route values and optional namespace-scoped translations.
  *
@@ -74,6 +91,23 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
         templateCache.clear();
     };
 
+    /**
+     * Reads all template files in the views directory to build the partials object.
+     *
+     * @returns {Promise<Record<string, string>>}
+     */
+    const loadPartials = async () => {
+        const files = await fs.readdir(VIEW_PATH);
+        const partials = {};
+        for (const file of files) {
+            if (file.endsWith('.html')) {
+                const name = path.basename(file, '.html');
+                partials[name] = await readTemplate(name);
+            }
+        }
+        return partials;
+    };
+
     return (req, res, next) => {
         const attachRender = languageMiddleware => {
             res.templateRender = async (view, templateVars = {}, languageNamespaces = []) => {
@@ -94,9 +128,11 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
                     }
                 }
 
+                const flattenedTranslations = flattenTranslations(translations);
+
                 const viewVars = {
                     ...runtimeVars,
-                    ...translations,
+                    ...flattenedTranslations,
                 };
 
                 for (const key in viewVars) {
@@ -107,15 +143,19 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
 
                 const clientVars = renderOptions.sendToClient
                     ? {
-                        'template-vars': `<script id="template-vars" type="application/json">${JSON.stringify(viewVars)}</script>`,
+                        'template-vars': `<script id="template-vars" type="application/json">${JSON.stringify({
+                            ...viewVars,
+                            translations,
+                        })}</script>`,
                     }
                     : {};
 
                 const template = await readTemplate(view);
+                const partials = await loadPartials();
                 const rendered = Mustache.render(template, {
                     ...viewVars,
                     ...clientVars,
-                });
+                }, partials);
 
                 res.send(rendered);
             };
@@ -138,5 +178,3 @@ export const renderMiddleware = (fixedVars = {}, options = {}) => {
         attachRender();
     };
 };
-
-export default renderMiddleware;

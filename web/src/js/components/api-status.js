@@ -1,7 +1,7 @@
 /**
  * DOM component that displays API availability.
  */
-export default class ApiStatus {
+export class ApiStatus {
     /**
      * @param {{ element: HTMLElement }} options
      */

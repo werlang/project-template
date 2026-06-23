@@ -7,7 +7,7 @@ vi.mock('mysql2/promise', () => ({
 }));
 
 const mysql = (await import('mysql2/promise')).default;
-const Mysql = (await import('../../../helpers/mysql.js')).default;
+const Mysql = (await import('../../../helpers/mysql.js')).Mysql;
 
 describe('Mysql helper', () => {
     beforeEach(() => {

@@ -1,9 +1,9 @@
-import Form from './form.js';
+import { Form } from './form.js';
 
 /**
  * DOM component for the sample item form.
  */
-export default class ItemForm {
+export class ItemForm {
     /**
      * @param {{ element: HTMLFormElement }} options
      */
