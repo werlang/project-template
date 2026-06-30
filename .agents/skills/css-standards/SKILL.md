@@ -44,9 +44,12 @@ Applies to the web client styles under `web/src/css/` and class names used in `w
 6. Never hardcode palette colors, fonts, radii, or shadows in component files when an existing token already covers the need.
 7. For hover, focus, active, muted, and surface variations, prefer `color-mix(...)` with existing tokens.
 8. Prefer nested CSS selectors within each component file to keep styles colocated and scoped.
-9. Keep component-specific responsive rules in the same component file as the base styles they modify.
-10. Keep interactions visually soft: subtle lift, border shifts, and shadow changes are preferred over aggressive transforms or high-contrast effects.
-11. Do not introduce alternate icon systems or version-specific Font Awesome font-family strings in component CSS.
+9. Write all new CSS mobile first: define the base layout and component state for phones at `0`, then progressively enhance upward with `min-width` media queries only.
+10. Use this repository breakpoint scale for all new responsive CSS: `sm` `640px`, `md` `768px`, `lg` `1024px`, `xl` `1280px`, `2xl` `1536px`.
+11. Do not introduce `max-width` media queries unless the user explicitly asks for an exception or an existing file already requires a targeted compatibility fix.
+12. Keep component-specific responsive rules in the same component file as the base styles they modify.
+13. Keep interactions visually soft: subtle lift, border shifts, and shadow changes are preferred over aggressive transforms or high-contrast effects.
+14. Do not introduce alternate icon systems or version-specific Font Awesome font-family strings in component CSS.
 
 ## Token Usage
 
@@ -102,6 +105,8 @@ Example pattern:
 - Do icon treatments follow the shared Font Awesome setup and avoid ad hoc glyph systems or stale font-family names?
 - Are tone variants created with `color-mix(...)`?
 - Are nested selectors used for component internals/states?
-- Do responsive overrides stay colocated with the component they modify?
+- Is the base CSS written for mobile first at `0` before any responsive enhancement?
+- Do responsive overrides stay colocated with the component they modify and use only `min-width` queries?
+- Do responsive breakpoints stay on the shared scale: `640px`, `768px`, `1024px`, `1280px`, `1536px`?
 - Are JS visual states represented by CSS classes (not inline styles)?
 - Do headings, badges, buttons, and surfaces still match the current typography and component language?
