@@ -5,6 +5,8 @@ description: Enforce the current web CSS architecture and warm editorial styling
 
 # CSS Standards
 
+Use this skill when work touches the web client styling system, component CSS structure, or responsive behavior in `web/src/css/`.
+
 ## Scope
 
 Applies to the web client styles under `web/src/css/` and class names used in `web/view/*.html` and `web/src/js/components/*.js`.
@@ -26,6 +28,19 @@ Applies to the web client styles under `web/src/css/` and class names used in `w
 - The current stack is `Roboto`, `Raleway`, and `Source Code Pro`, loaded through CSS `@import` in `base.css`.
 - Do not add new font families in component files. If typography needs to change globally, update `tokens.css` and `base.css` together.
 
+## Responsive Rules
+
+- CSS must be mobile first: define the base layout for `0` first, then enhance it with `min-width` media queries.
+- Do not use `max-width` breakpoints unless the user explicitly asks for them or an existing file needs a narrow compatibility exception.
+- Use this repository breakpoint scale:
+  - `Base`: `0`
+  - `sm`: `640px`
+  - `md`: `768px`
+  - `lg`: `1024px`
+  - `xl`: `1280px`
+  - `2xl`: `1536px`
+- Keep responsive overrides close to the selectors they modify rather than collecting them in detached responsive-only blocks.
+
 ## Icons
 
 - Font Awesome is the shared icon system for the web app and is loaded globally through `web/src/css/base.css`.
@@ -42,14 +57,17 @@ Applies to the web client styles under `web/src/css/` and class names used in `w
 4. If two or more page-scoped components share the same visual primitive and there is no clear reusable base component yet, extract a small shared partial for that page scope instead of duplicating rules or pushing them back into the entry file.
 5. Keep project-wide tokens in `web/src/css/tokens.css` under `:root`.
 6. Never hardcode palette colors, fonts, radii, or shadows in component files when an existing token already covers the need.
-7. For hover, focus, active, muted, and surface variations, prefer `color-mix(...)` with existing tokens.
-8. Prefer nested CSS selectors within each component file to keep styles colocated and scoped.
-9. Write all new CSS mobile first: define the base layout and component state for phones at `0`, then progressively enhance upward with `min-width` media queries only.
-10. Use this repository breakpoint scale for all new responsive CSS: `sm` `640px`, `md` `768px`, `lg` `1024px`, `xl` `1280px`, `2xl` `1536px`.
-11. Do not introduce `max-width` media queries unless the user explicitly asks for an exception or an existing file already requires a targeted compatibility fix.
-12. Keep component-specific responsive rules in the same component file as the base styles they modify.
-13. Keep interactions visually soft: subtle lift, border shifts, and shadow changes are preferred over aggressive transforms or high-contrast effects.
-14. Do not introduce alternate icon systems or version-specific Font Awesome font-family strings in component CSS.
+7. Use `var(--token)` for pure shared colors and `rgb(from var(--token) r g b / alpha)` when a shared color needs opacity.
+8. For hover, focus, active, muted, and surface variations, prefer `color-mix(...)` or another standards-compliant blend with existing tokens.
+9. Prefer nested CSS selectors within each component file to keep styles colocated and scoped.
+10. Write all new CSS mobile first: define the base layout and component state for phones at `0`, then progressively enhance upward with `min-width` media queries only.
+11. Use this repository breakpoint scale for all new responsive CSS: `sm` `640px`, `md` `768px`, `lg` `1024px`, `xl` `1280px`, `2xl` `1536px`.
+12. Do not introduce `max-width` media queries unless the user explicitly asks for an exception or an existing file already requires a targeted compatibility fix.
+13. Keep component-specific responsive rules in the same component file as the base styles they modify.
+14. Keep component styles in their existing partials unless a genuinely reusable visual primitive emerges and deserves its own partial.
+15. Prefer CSS class toggles over inline styles. Dynamic asset URLs or one-off image backgrounds are the exception, not the default.
+16. Keep interactions visually soft: subtle lift, border shifts, and shadow changes are preferred over aggressive transforms or high-contrast effects.
+17. Do not introduce alternate icon systems or version-specific Font Awesome font-family strings in component CSS.
 
 ## Token Usage
 
@@ -94,6 +112,9 @@ Example pattern:
 - Keep gradients within the project palette and use them mainly for large branded surfaces.
 - Use `--font-display` only where hierarchy or brand presence matters; do not turn body copy into display text.
 - Preserve roomy spacing in forms and cards. The current UI should feel calmer and more breathable than the previous version.
+- Do not import a new design system or generic admin theme.
+- Do not add dark-mode-only treatments unless explicitly requested.
+- Do not mix `max-width` and `min-width` strategies in the same stylesheet by default.
 - When in doubt, match the tone of `base.css`, `panel.css`, and `button.css` before inventing a new pattern.
 
 ## Review Checklist
@@ -102,8 +123,8 @@ Example pattern:
 - Does the page entry file stay slim and act as composition instead of owning leaf component blocks?
 - Does the change preserve the warm editorial theme instead of drifting back to a dark or neon look?
 - Are all colors, fonts, radii, and shadows tokenized via `var(--...)` where appropriate?
+- Do pure colors use `var(--token)`, alpha variants `rgb(from var(--token) r g b / alpha)`, and non-pure blends `color-mix(...)`?
 - Do icon treatments follow the shared Font Awesome setup and avoid ad hoc glyph systems or stale font-family names?
-- Are tone variants created with `color-mix(...)`?
 - Are nested selectors used for component internals/states?
 - Is the base CSS written for mobile first at `0` before any responsive enhancement?
 - Do responsive overrides stay colocated with the component they modify and use only `min-width` queries?
