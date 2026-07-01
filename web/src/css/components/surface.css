@@ -1,0 +1,21 @@
+.surface-card,
+.surface-subtle,
+.surface-pill {
+    border: 1px solid var(--color-border);
+}
+
+.surface-card {
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.surface-subtle {
+    border-radius: var(--radius-md);
+    background: var(--color-surface-muted);
+}
+
+.surface-pill {
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+}

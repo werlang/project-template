@@ -37,7 +37,7 @@ export class ItemList {
         this.element.innerHTML = '';
         items.forEach(item => {
             const row = document.createElement('article');
-            row.classList.add('item-row');
+            row.classList.add('item-row', 'surface-subtle');
             row.innerHTML = `
                 <div>
                     <h3></h3>

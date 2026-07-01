@@ -16,14 +16,14 @@
                     <h1>{{heading}}</h1>
                     <p class="summary">A small working sample that keeps DOM, API, model, helper, and route responsibilities separated.</p>
                 </div>
-                <div class="status-pill" data-status="loading">
+                <div class="status-pill surface-pill" data-status="loading">
                     <span class="status-dot"></span>
                     <span data-role="api-status">Checking API</span>
                 </div>
             </header>
 
             <section class="workspace-grid">
-                <form id="item-form" class="panel">
+                <form id="item-form" class="panel surface-card">
                     <h2>Create item</h2>
                     <label>
                         <span>Name</span>
@@ -36,7 +36,7 @@
                     <button id="save-item" class="default" type="submit">Save item</button>
                 </form>
 
-                <section class="panel">
+                <section class="panel surface-card">
                     <div class="panel-heading">
                         <h2>Items</h2>
                         <button id="refresh-items" type="button" title="Refresh items">

@@ -1,5 +1,6 @@
 @import './tokens.css';
 @import './base.css';
+@import './components/surface.css';
 @import './components/button.css';
 @import './components/form.css';
 @import './components/toast.css';

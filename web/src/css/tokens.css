@@ -17,7 +17,8 @@
     --color-main-alt: #542740;
     --color-main-contrast: #f8f4ee;
     --color-alt-contrast: #fbf8f4;
-    --color-border: color-mix(in srgb, var(--color-main), #ffffff 78%);
+    --color-surface-bright: #ffffff;
+    --color-border: color-mix(in srgb, var(--color-main), var(--color-surface-bright) 78%);
     --color-text: #474c54;
     --color-text-secondary: #6c7068;
     --color-link: #3f7da4;
@@ -43,4 +44,5 @@
     --color-overlay: rgb(from var(--color-shadow-base) r g b / 0.56);
     --shadow-sm: 0 1px 3px rgb(from var(--color-shadow-base) r g b / 0.12);
     --shadow-md: 0 8px 24px rgb(from var(--color-shadow-base) r g b / 0.12);
+    --shadow-lg: 0 18px 32px rgb(from var(--color-shadow-base) r g b / 0.16);
 }

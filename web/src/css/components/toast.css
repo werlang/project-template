@@ -1,17 +1,15 @@
 .toast-container {
     position: fixed;
-    inset: 20px 20px auto auto;
+    inset: auto var(--space-3) var(--space-3) var(--space-3);
     z-index: 1200;
     display: grid;
-    gap: 12px;
-    width: min(380px, calc(100vw - 32px));
+    gap: var(--space-3);
+    width: auto;
     pointer-events: none;
 }
 
 .toast-container--center {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
+    transform: none;
 }
 
 .toast {
@@ -21,14 +19,14 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: start;
-    gap: 14px;
+    gap: var(--space-3);
     overflow: hidden;
-    padding: var(--space-4) var(--space-4) var(--space-4) 18px;
+    padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
     border: 1px solid color-mix(in srgb, var(--toast-accent), transparent 72%);
     border-radius: var(--radius-lg);
-    background: linear-gradient(180deg, color-mix(in srgb, #ffffff, var(--color-background) 38%) 0%, color-mix(in srgb, var(--color-background), var(--toast-accent) 6%) 100%);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-surface-bright), var(--color-background) 38%) 0%, color-mix(in srgb, var(--color-background), var(--toast-accent) 6%) 100%);
     color: color-mix(in srgb, var(--toast-accent), var(--color-text) 46%);
-    box-shadow: 0 18px 32px var(--color-shadow);
+    box-shadow: var(--shadow-lg);
     pointer-events: auto;
     transition: opacity 0.18s ease, transform 0.18s ease;
     animation: toast-in 0.24s ease both;
@@ -39,7 +37,7 @@
     position: absolute;
     inset: 0 auto 0 0;
     width: 5px;
-    background: color-mix(in srgb, var(--toast-accent), #ffffff 12%);
+    background: color-mix(in srgb, var(--toast-accent), var(--color-surface-bright) 12%);
 }
 
 .toast::after {
@@ -48,7 +46,7 @@
     inset: auto 10px 0 0;
     height: 3px;
     border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--toast-accent), #ffffff 34%);
+    background: color-mix(in srgb, var(--toast-accent), var(--color-surface-bright) 34%);
     opacity: 0;
     transform: scaleX(1);
     transform-origin: left center;
@@ -87,7 +85,7 @@
 
 .toast__content {
     display: grid;
-    gap: 6px;
+    gap: var(--space-2);
     min-width: 0;
 }
 
@@ -101,7 +99,7 @@
 
 .toast__body {
     display: grid;
-    gap: 4px;
+    gap: var(--space-1);
     line-height: 1.55;
 }
 
@@ -117,7 +115,7 @@
     height: 34px;
     border: 1px solid color-mix(in srgb, var(--toast-accent), transparent 78%);
     border-radius: 50%;
-    background: color-mix(in srgb, #ffffff, transparent 10%);
+    background: color-mix(in srgb, var(--color-surface-bright), transparent 10%);
     color: inherit;
     font-size: 1.05rem;
     line-height: 1;
@@ -159,11 +157,15 @@
     }
 }
 
-@media (max-width: 640px) {
-    .toast-container,
+@media (min-width: 640px) {
+    .toast-container {
+        inset: var(--space-5) var(--space-5) auto auto;
+        width: min(380px, calc(100vw - var(--space-6)));
+    }
+
     .toast-container--center {
-        inset: auto 12px 12px 12px;
-        width: auto;
-        transform: none;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
     }
 }

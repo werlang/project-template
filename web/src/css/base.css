@@ -60,23 +60,23 @@ i[class*=' fa-'] {
 h1 {
     margin: 10px 0 12px;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 4rem);
+    font-size: 2.5rem;
     line-height: 1.02;
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
 }
 
 h2 {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 3.4vw, 2.25rem);
+    font-size: 1.75rem;
     line-height: 1.1;
-    letter-spacing: -0.025em;
+    letter-spacing: 0;
 }
 
 h3 {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+    font-size: 1.25rem;
     line-height: 1.2;
 }
 
@@ -91,7 +91,7 @@ strong {
 #frame {
     width: 100%;
     min-height: 100vh;
-    padding: var(--space-5);
+    padding: var(--space-3);
 }
 
 .text-link {
@@ -107,8 +107,38 @@ strong {
     color: var(--color-error);
 }
 
-@media only screen and (min-width: 800px) {
+@media (min-width: 768px) {
+    #frame {
+        padding: var(--space-5);
+    }
+
+    h1 {
+        font-size: 3.25rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
     #frame {
         padding: var(--space-7);
+    }
+
+    h1 {
+        font-size: 4rem;
+    }
+
+    h2 {
+        font-size: 2.25rem;
+    }
+
+    h3 {
+        font-size: 1.75rem;
     }
 }

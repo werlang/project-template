@@ -3,11 +3,12 @@ import path from 'path';
 import fs from 'fs/promises';
 
 const LOCALE_PATH = path.join(import.meta.dirname, '../locales');
+const SUPPORTED_LANGUAGES = ['en', 'pt'];
 
 const languageMiddleware = {
 
     fallbackLng: 'en',
-    supportedLanguages: ['en', 'pt'],
+    supportedLanguages: SUPPORTED_LANGUAGES,
 
     // Function to load a single translation file
     loadLocale: async function(lng, ns) {
