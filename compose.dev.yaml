@@ -1,6 +1,8 @@
 services:
     web:
-        build: ./web
+        build:
+            context: ./web
+            target: development
         volumes:
             - ./web:/app
             - node_modules_web:/app/node_modules
@@ -15,7 +17,9 @@ services:
         depends_on:
             - api
     api:
-        build: ./api
+        build:
+            context: ./api
+            target: development
         restart: unless-stopped
         env_file:
             - .env

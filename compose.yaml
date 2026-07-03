@@ -1,9 +1,8 @@
 services:
     web:
-        build: ./web
-        volumes:
-            - ./web:/app
-            - node_modules_web:/app/node_modules
+        build:
+            context: ./web
+            target: production
         restart: unless-stopped
         env_file:
             - .env
@@ -13,13 +12,12 @@ services:
         depends_on:
             - api
     api:
-        build: ./api
+        build:
+            context: ./api
+            target: production
         restart: unless-stopped
         env_file:
             - .env
-        volumes:
-            - ./api:/app
-            - node_modules_api:/app/node_modules
         command: npm run production
         networks:
             - template
@@ -39,9 +37,8 @@ services:
         networks:
             - template
 volumes:
-    node_modules_web:
-    node_modules_api:
     mysql:
 networks:
     template:
         name: template
+
