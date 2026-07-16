@@ -6,7 +6,6 @@ import { ItemList } from './components/item-list.js';
 import { ItemForm } from './components/item-form.js';
 import { ApiStatus } from './components/api-status.js';
 import { Item } from './model/item.js';
-import { TemplateVar } from './helpers/template-var.js';
 import { LocalData } from './helpers/local-data.js';
 import { Api } from './helpers/api.js';
 
@@ -72,6 +71,5 @@ itemForm.submit(async (data, validation) => {
 
 refreshButton.click(loadItems);
 
-document.documentElement.dataset.appName = TemplateVar.get('appName');
 checkApi();
 loadItems();

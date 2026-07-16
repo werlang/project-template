@@ -114,7 +114,9 @@ Use shared token names from `tokens.css`:
 
 ## Interaction with JS Components
 
-When a component has visual state changes, toggle CSS classes in JS instead of writing inline styles.
+When a component has visual state changes, toggle CSS classes in JS instead of writing inline styles or storing state in `data-*` attributes.
+
+**Never use `data-*` attributes for CSS state selectors.** Application state (loading, ready, error, active, disabled, expanded) must be expressed as CSS class toggles, not as `&[data-status='...']` selectors. Data attributes are reserved for framework selectors (`data-role`, `data-position`) and DOM behavior hooks only.
 
 Example pattern:
 

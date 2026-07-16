@@ -17,6 +17,8 @@ This repository is a generic Node/Express web/API template. Preserve the service
 - Keep SQL generation inside `api/helpers/mysql.js`.
 - Use `CustomError` and `api/middleware/error.js` for API error responses.
 - Keep API response payloads camelCase.
+- Never store application data in DOM `data-*` attributes. Data attributes are for framework selectors and DOM behavior hooks only. All domain data (IDs, values, lookup mappings) must live in dedicated JavaScript structures — plain objects, Maps, or class properties.
+- When rendering a list of selectable items, build a lookup map keyed by element ID or index and resolve data from the map at interaction time instead of reading `getAttribute('data-*')`.
 - Add or update tests for behavior changes.
 - Update documentation and `.agents/skills/` when conventions change.
 

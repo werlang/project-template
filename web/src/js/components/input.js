@@ -69,9 +69,7 @@ export class Input extends BaseComponent {
     setError(message) {
         this.get().classList.add('error');
         this.get().setAttribute('aria-invalid', 'true');
-        if (message) {
-            this.get().setAttribute('data-error', message);
-        }
+        this._errorMessage = message || '';
         this.get().focus();
         return this;
     }
@@ -84,7 +82,7 @@ export class Input extends BaseComponent {
     clearError() {
         this.get().classList.remove('error');
         this.get().removeAttribute('aria-invalid');
-        this.get().removeAttribute('data-error');
+        this._errorMessage = '';
         return this;
     }
 

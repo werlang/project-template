@@ -23,6 +23,8 @@ Use this skill for changes under `web/`.
 - Treat pages as server-rendered first and browser-enhanced second.
 - Page entry files wire components, models, and helpers together; they should not become API clients or DOM component libraries.
 - Reuse `Form`, `Input`, `Select`, and `Toast` for form state, validation, autosave, and notifications before adding one-off DOM logic.
+- Never store application data in DOM `data-*` attributes. Data attributes are for framework selectors (`data-role`, `data-position`) and DOM behavior hooks only. Domain data (IDs, values, error messages, grouping keys, state enums) belongs in dedicated JavaScript structures.
+- When a component needs to associate data with DOM elements for later lookup, use a `WeakMap` keyed by the element or an index-based lookup map rather than `dataset` or `getAttribute('data-*')`.
 - Keep timeout handling, content-type parsing, and API error mapping inside `Request`/`Api`.
 - Use `TemplateVar` for server-provided runtime config when the render middleware instance sends vars to the browser.
 - Use frontend models for API calls.

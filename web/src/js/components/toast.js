@@ -7,6 +7,8 @@ const FLASH_STORAGE_KEY = 'template_flash_toast';
 const TOAST_SELECTOR = '.toast';
 const TOAST_CONTAINER_SELECTOR = '.toast-container';
 
+const toastGroupMap = new WeakMap();
+
 /**
  * Returns session storage when the current browser allows access.
  *
@@ -179,7 +181,7 @@ export class Toast extends BaseComponent {
         const normalizedGroup = typeof group === 'string' ? group.trim() : '';
         if (normalizedGroup) {
             Toast.dismissGroup(normalizedGroup);
-            this.get().dataset.group = normalizedGroup;
+            toastGroupMap.set(element, normalizedGroup);
         }
 
         this.#container = resolveToastContainer(position);
@@ -279,7 +281,7 @@ export class Toast extends BaseComponent {
         }
 
         document.querySelectorAll(TOAST_SELECTOR).forEach(element => {
-            if (element.dataset.group === normalizedGroup) {
+            if (toastGroupMap.get(element) === normalizedGroup) {
                 element.remove();
             }
         });
@@ -296,7 +298,6 @@ export class Toast extends BaseComponent {
         const normalizedTone = normalizeTone(tone);
         this.get().classList.remove('toast--info', 'toast--success', 'toast--warning', 'toast--error');
         this.get().classList.add(`toast--${normalizedTone}`);
-        this.get().dataset.tone = normalizedTone;
         this.get().setAttribute('role', normalizedTone === 'error' ? 'alert' : 'status');
         this.get().setAttribute('aria-live', normalizedTone === 'error' ? 'assertive' : 'polite');
         return this;

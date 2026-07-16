@@ -17,7 +17,13 @@ export class ApiStatus {
      * @param {string} message
      */
     set(state, message) {
-        this.element.dataset.status = state;
+        this.element.classList.remove('status-pill--ready', 'status-pill--error');
+        if (state === 'ready') {
+            this.element.classList.add('status-pill--ready');
+        }
+        else if (state === 'error') {
+            this.element.classList.add('status-pill--error');
+        }
         this.text.textContent = message;
     }
 }

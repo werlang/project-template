@@ -13,6 +13,7 @@ Use this skill for code reviews or defect investigations.
 - Route/model/helper boundary violations.
 - SQL injection or unsafe filter behavior.
 - DOM ownership violations in frontend code.
+- Application data stored in `data-*` attributes (IDs, values, error messages, grouping keys, state enums). Data attributes should only be used as framework selectors or DOM behavior hooks.
 - API contract drift between frontend models and backend routes.
 - Missing regression tests for changed behavior.
 - Browser-visible rendering, focus, and state bugs.
