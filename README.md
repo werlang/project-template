@@ -3,9 +3,9 @@
 This repository is a standalone Node/Express template for building server-rendered web apps backed by a JSON API and MySQL. It is designed to be forked for new projects while keeping two clear service boundaries:
 
 - `web/`: Express server-rendered pages with Mustache, async render middleware, Webpack-built page bundles, DOM components, frontend helpers, and API-backed frontend models.
-- `api/`: Express JSON API with routers, middleware, entity model classes, and a MySQL helper that owns all SQL construction.
+- `api/`: Express JSON API with routers, middleware, entity model classes, MySQL helper that owns all SQL construction, and authentication (`Cookies` helper, `jose` JWT, Google OAuth ID token verification).
 
-The checked-in sample `items` flow is intentionally small so new projects can replace it with their own domain entities without first removing product-specific behavior.
+The template includes built-in authentication with HttpOnly cookies, JWT verification, password login, and Google login flow (`/auth/google`, `/auth/login`, `/auth/me`, `/auth/logout`). The checked-in sample `items` flow is intentionally small so new projects can replace it with their own domain entities without first removing product-specific behavior.
 
 ## Quick Start
 

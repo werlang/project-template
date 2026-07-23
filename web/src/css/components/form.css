@@ -31,8 +31,8 @@ select {
         border-color: var(--color-error);
         box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-error) 20%, transparent 80%);
     }
-}
 
-textarea {
-    resize: vertical;
+    &:is(textarea) {
+        resize: vertical;
+    }
 }

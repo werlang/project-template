@@ -14,11 +14,15 @@
         background: var(--color-text-muted);
     }
 
-    &.status-pill--ready .status-dot {
-        background: var(--color-success);
+    &.status-pill--ready {
+        .status-dot {
+            background: var(--color-success);
+        }
     }
 
-    &.status-pill--error .status-dot {
-        background: var(--color-error);
+    &.status-pill--error {
+        .status-dot {
+            background: var(--color-error);
+        }
     }
 }

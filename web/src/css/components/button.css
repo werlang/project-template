@@ -5,11 +5,17 @@ button {
     border-radius: var(--radius-md);
     background: color-mix(in srgb, var(--color-main) 12%, var(--color-surface) 88%);
     color: var(--color-main);
+    cursor: pointer;
     transition: 160ms ease;
 
     &:hover:not(:disabled) {
         background: color-mix(in srgb, var(--color-main) 18%, var(--color-surface) 82%);
         border-color: var(--color-main);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
     }
 
     &.default {

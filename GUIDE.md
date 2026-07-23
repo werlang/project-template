@@ -54,7 +54,19 @@ Routes should:
 
 `api/helpers/mysql.js` is the only place that builds SQL. Models call CRUD-shaped helper methods such as `find`, `findOne`, `get`, `insert`, `upsert`, `update`, and `delete`, and use helper utilities such as transactions, raw fragments, date formatting, and database dumps without moving SQL construction into models.
 
-`api/middleware/auth.js` provides JWT bearer authentication and bcrypt password login support. Keep authentication reusable and route-independent.
+`api/helpers/cookies.js` provides the `Cookies` helper class for parsing incoming cookies from requests/headers and setting/clearing HttpOnly, secure, SameSite session cookies on response objects.
+
+`api/helpers/jwt.js` provides `signJwt` and `verifyJwt` token methods powered by `jose` with standard algorithm (`HS256`), default expiration times, and fallback secret keys.
+
+`api/helpers/google-auth.js` provides `GoogleAuthHelper.verifyToken(idToken)` to verify Google OAuth ID tokens via Google's tokeninfo API, validating email verification state and Client ID audience.
+
+`api/middleware/auth.js` provides Express `auth` middleware supporting HttpOnly session cookies (primary) and Bearer authorization tokens (fallback). It supports required (`user:exists`), optional (`user:optional`), and password verification (`user:password`) modes.
+
+`api/route/auth.js` and `api/route/login.js` expose authentication endpoints:
+- `POST /auth/google`: authenticates Google OAuth ID token, registers or updates user profile, sets HttpOnly session cookie, and returns signed JWT + user info.
+- `POST /auth/login` (and `POST /login`): authenticates password, sets HttpOnly session cookie, and returns signed JWT + user info.
+- `GET /auth/me`: retrieves currently authenticated user profile from valid session.
+- `POST /auth/logout`: logs out user by clearing the HttpOnly session cookie.
 
 `api/scripts/migrate.js` runs versioned database migrations from `api/migrations/`. Migrations use MySQL advisory locks (`SELECT GET_LOCK('schema_migrations_lock', 10)`) and track applied versions in the `schema_migrations` table.
 
