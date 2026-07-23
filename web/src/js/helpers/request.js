@@ -82,14 +82,15 @@ export class Request {
 
             if (!response.ok) {
                 const message = payload?.message || response.statusText || 'Request failed';
-                throw new CustomError(response.status, message, payload);
+                const code = payload?.code;
+                throw new CustomError(response.status, message, payload, code);
             }
 
             return payload;
         }
         catch (error) {
             if (error.name === 'AbortError') {
-                throw new CustomError(408, 'Request timeout', { timeout });
+                throw new CustomError(408, 'Request timeout', { timeout }, 'REQUEST_TIMEOUT');
             }
             throw error;
         }

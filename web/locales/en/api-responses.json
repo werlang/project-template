@@ -1,0 +1,23 @@
+{
+  "NAME_REQUIRED": "Name is required.",
+  "NAME_EXCEEDS_LIMIT": "Name exceeds maximum length.",
+  "CREDENTIALS_REQUIRED": "Email and password are required.",
+  "INVALID_CREDENTIALS": "Invalid credentials.",
+  "INVALID_PASSWORD": "Invalid password.",
+  "TOKEN_REQUIRED": "Token not provided.",
+  "INVALID_TOKEN": "Invalid token.",
+  "USER_NOT_FOUND": "User not found.",
+  "UNAUTHORIZED": "Unauthorized access. Please log in.",
+  "GOOGLE_TOKEN_REQUIRED": "Google ID token not provided.",
+  "INVALID_GOOGLE_TOKEN": "Invalid Google ID token.",
+  "ITEM_NOT_FOUND": "Item not found.",
+  "INVALID_FIELD": "Invalid field.",
+  "RELATION_NOT_FOUND": "Relation not found.",
+  "RELATION_ALREADY_EXISTS": "Relation already exists.",
+  "BAD_REQUEST": "Bad request.",
+  "FORBIDDEN": "Access forbidden.",
+  "NOT_FOUND": "Resource not found.",
+  "CONFLICT": "Conflict occurred.",
+  "INTERNAL_SERVER_ERROR": "An unexpected server error occurred.",
+  "REQUEST_TIMEOUT": "Request timed out."
+}

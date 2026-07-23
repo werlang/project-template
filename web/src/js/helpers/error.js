@@ -3,13 +3,15 @@
  */
 export class CustomError extends Error {
     /**
-     * @param {number} code
-     * @param {string} message
-     * @param {unknown} data
+     * @param {number} status - HTTP status code
+     * @param {string} message - Error message
+     * @param {unknown} [data] - Error payload data
+     * @param {string} [code] - Error code string
      */
-    constructor(code, message, data) {
+    constructor(status, message, data, code) {
         super(message);
-        this.code = code;
+        this.status = status;
         this.data = data;
+        this.code = code || (typeof data === 'object' && data !== null ? data.code : undefined) || (typeof status === 'string' ? status : undefined);
     }
 }

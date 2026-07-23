@@ -156,7 +156,7 @@ async function invoke(method, path, body = {}) {
         await runHandlers(handlers);
     }
     catch (error) {
-        res.status(error.code || 500).send({ message: error.message });
+        res.status(error.status || (Number.isInteger(error.code) ? error.code : 500)).send({ message: error.message, code: error.code });
     }
 
     return res;

@@ -12,6 +12,10 @@ export class TemplateVar {
     static isBuilt = false;
 
     static build() {
+        if (typeof document === 'undefined') {
+            TemplateVar.isBuilt = true;
+            return;
+        }
         const script = document.querySelector('#template-vars');
         if (!script) return;
 

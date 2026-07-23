@@ -9,8 +9,10 @@ import { Item } from './model/item.js';
 import { LocalData } from './helpers/local-data.js';
 import { Api } from './helpers/api.js';
 import { Tooltip } from './components/tooltip.js';
+import { Translator } from './helpers/translate.js';
 
 Tooltip.bindAll();
+const translator = new Translator();
 
 const itemList = new ItemList({
     element: document.querySelector('#item-list'),
@@ -39,8 +41,9 @@ async function loadItems() {
         lastRefresh.set({ data: Date.now(), expires: '1d' });
     }
     catch (error) {
-        itemList.error(error.message);
-        new Toast(error.message, { type: 'error' });
+        const message = translator.translateApiError(error);
+        itemList.error(message);
+        new Toast(message, { type: 'error' });
     }
 }
 

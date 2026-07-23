@@ -17,6 +17,8 @@ app.use(renderMiddleware({
     apiurl: process.env.API_URL,
     appName: 'Template App',
     year: new Date().getFullYear(),
+}, {
+    language: true,
 }));
 
 app.get('/', async (req, res, next) => {
@@ -24,7 +26,7 @@ app.get('/', async (req, res, next) => {
         await res.templateRender('index', {
             pageTitle: 'Template App',
             heading: 'Template App',
-        });
+        }, ['api-responses']);
     }
     catch (error) {
         next(error);
