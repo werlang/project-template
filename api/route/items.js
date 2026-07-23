@@ -28,10 +28,10 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', auth({ 'user:optional': true }), async (req, res, next) => {
     try {
         if (typeof req.body.name !== 'string' || !req.body.name.trim()) {
-            throw new CustomError(400, 'Name is required.');
+            throw new CustomError(400, 'Name is required.', 'NAME_REQUIRED');
         }
         if (req.body.name.trim().length > 255) {
-            throw new CustomError(400, 'Name exceeds maximum length.');
+            throw new CustomError(400, 'Name exceeds maximum length.', 'NAME_EXCEEDS_LIMIT');
         }
 
         const item = await new Item({
@@ -57,10 +57,10 @@ router.put('/:id', auth({ 'user:optional': true }), async (req, res, next) => {
 
         if (req.body.name !== undefined) {
             if (typeof req.body.name !== 'string' || !req.body.name.trim()) {
-                throw new CustomError(400, 'Name is required.');
+                throw new CustomError(400, 'Name is required.', 'NAME_REQUIRED');
             }
             if (req.body.name.trim().length > 255) {
-                throw new CustomError(400, 'Name exceeds maximum length.');
+                throw new CustomError(400, 'Name exceeds maximum length.', 'NAME_EXCEEDS_LIMIT');
             }
             toUpdate.name = req.body.name;
         }

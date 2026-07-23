@@ -35,7 +35,7 @@ export class Relation {
      */
     async insert(fieldValue) {
         if (await this.check(fieldValue)) {
-            throw new CustomError(400, 'Relation already exists.');
+            throw new CustomError(400, 'Relation already exists.', 'RELATION_ALREADY_EXISTS');
         }
 
         return Db.insert(this.tableName, {
@@ -52,7 +52,7 @@ export class Relation {
      */
     async delete(fieldValue) {
         if (!await this.check(fieldValue)) {
-            throw new CustomError(404, 'Relation does not exist.');
+            throw new CustomError(404, 'Relation does not exist.', 'RELATION_NOT_FOUND');
         }
 
         return Db.delete(this.tableName, {
@@ -70,7 +70,7 @@ export class Relation {
      */
     async update(fieldValue, data) {
         if (!await this.check(fieldValue)) {
-            throw new CustomError(404, 'Relation does not exist.');
+            throw new CustomError(404, 'Relation does not exist.', 'RELATION_NOT_FOUND');
         }
 
         return Db.update(this.tableName, data, {

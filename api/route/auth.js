@@ -35,7 +35,7 @@ router.post('/google', async (req, res, next) => {
         const tokenToVerify = idToken || credential;
 
         if (!tokenToVerify) {
-            throw new CustomError(400, 'Google ID token not provided.');
+            throw new CustomError(400, 'Google ID token not provided.', 'GOOGLE_TOKEN_REQUIRED');
         }
 
         const googlePayload = await GoogleAuthHelper.verifyToken(tokenToVerify);
@@ -65,7 +65,7 @@ router.post('/google', async (req, res, next) => {
         });
     } catch (error) {
         if (error.message && error.message.includes('Google ID Token')) {
-            return next(new CustomError(401, error.message));
+            return next(new CustomError(401, error.message, 'INVALID_GOOGLE_TOKEN'));
         }
         next(error);
     }

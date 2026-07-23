@@ -302,7 +302,7 @@ export class Mysql {
     static async get(table, id) {
         const row = await Mysql.findOne(table, { filter: { id } });
         if (!row) {
-            throw new CustomError(404, 'Item not found.');
+            throw new CustomError(404, 'Item not found.', 'ITEM_NOT_FOUND');
         }
         return row;
     }

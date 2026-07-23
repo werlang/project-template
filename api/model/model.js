@@ -88,7 +88,7 @@ export class Model {
      */
     async getBy(field = 'id', additionalFilters = {}) {
         if (!this[field]) {
-            throw new CustomError(400, 'Invalid field.');
+            throw new CustomError(400, 'Invalid field.', 'INVALID_FIELD');
         }
 
         const items = await Db.find(this.#tableName, {
@@ -100,7 +100,7 @@ export class Model {
         });
 
         if (!items.length) {
-            throw new CustomError(404, 'Item not found.');
+            throw new CustomError(404, 'Item not found.', 'ITEM_NOT_FOUND');
         }
 
         Object.assign(this, items[0]);
@@ -157,28 +157,28 @@ export class Model {
 
     async insertRelation(name, value) {
         if (!this.relations[name]) {
-            throw new CustomError(400, 'Relation not found.');
+            throw new CustomError(400, 'Relation not found.', 'RELATION_NOT_FOUND');
         }
         return this.relations[name].insert(value);
     }
 
     async deleteRelation(name, value) {
         if (!this.relations[name]) {
-            throw new CustomError(400, 'Relation not found.');
+            throw new CustomError(400, 'Relation not found.', 'RELATION_NOT_FOUND');
         }
         return this.relations[name].delete(value);
     }
 
     async getRelation(name) {
         if (!this.relations[name]) {
-            throw new CustomError(400, 'Relation not found.');
+            throw new CustomError(400, 'Relation not found.', 'RELATION_NOT_FOUND');
         }
         return this.relations[name].get();
     }
 
     async updateRelation(name, value, data) {
         if (!this.relations[name]) {
-            throw new CustomError(400, 'Relation not found.');
+            throw new CustomError(400, 'Relation not found.', 'RELATION_NOT_FOUND');
         }
         return this.relations[name].update(value, data);
     }
