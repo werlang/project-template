@@ -13,7 +13,8 @@ Use this skill for changes under `api/`.
 - Put endpoint modules in `api/route/` and export an Express router.
 - Routes parse input, validate request data, instantiate models, call model methods, and shape HTTP responses.
 - Routes must not call `api/helpers/mysql.js` directly.
-- Throw `CustomError(statusCode, message, data)` for expected request or domain failures.
+- Throw `CustomError(status, message, code, data)` for expected request or domain failures, providing a machine-readable error code string (e.g. `NAME_REQUIRED`, `INVALID_CREDENTIALS`).
+- API JSON error responses returned by `api/middleware/error.js` include `{ error: true, status, type, code, message, data }`.
 - Return camelCase JSON even when database columns are snake_case.
 - Keep only `GET`, `POST`, `PUT`, and `DELETE` for ordinary REST resources.
 - Use `Cookies.set(res, SESSION_COOKIE_NAME, token)` for setting HttpOnly session cookies on authentication endpoints.

@@ -48,7 +48,11 @@ Routes should:
 - instantiate model classes,
 - call model methods,
 - return camelCase JSON responses,
-- pass errors to shared middleware.
+- pass errors to shared middleware (`api/middleware/error.js`), which formats responses with `{ error: true, status, type, code, message, data }`.
+
+`api/helpers/error.js` defines `CustomError(status, message, code, data)`, allowing endpoints and models to specify machine-readable error codes (e.g., `NAME_REQUIRED`, `INVALID_CREDENTIALS`).
+
+`web/src/js/helpers/translate.js` provides the client-side `Translator` class wrapping `i18next` and `TemplateVar`, allowing browser components to translate template strings with `translator.translate(key, ns)` and API error codes with `translator.translateApiError(errorPayload, 'api-responses')`.
 
 `api/model/` contains entity classes. These classes own persistence, table field maps, allowed update fields, and entity-specific business behavior.
 
