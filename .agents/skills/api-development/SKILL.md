@@ -16,6 +16,9 @@ Use this skill for changes under `api/`.
 - Throw `CustomError(statusCode, message, data)` for expected request or domain failures.
 - Return camelCase JSON even when database columns are snake_case.
 - Keep only `GET`, `POST`, `PUT`, and `DELETE` for ordinary REST resources.
+- Use `Cookies.set(res, SESSION_COOKIE_NAME, token)` for setting HttpOnly session cookies on authentication endpoints.
+- Route authentication checks through `auth()` middleware (`api/middleware/auth.js`), which handles HttpOnly session cookies and Bearer tokens.
+- For Google OAuth authentication, use `GoogleAuthHelper.verifyToken(idToken)` (`api/helpers/google-auth.js`) and issue signed session JWTs with `signJwt` (`api/helpers/jwt.js`).
 
 ## Validation
 

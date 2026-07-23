@@ -9,6 +9,7 @@ vi.mock('../../../model/user.js', () => ({
         }
 
         async getBy() {
+            if (!mockUserRecord) return null;
             Object.assign(this, mockUserRecord);
             return this;
         }
@@ -21,15 +22,13 @@ vi.mock('bcrypt', () => ({
     },
 }));
 
-vi.mock('jsonwebtoken', () => ({
-    default: {
-        sign: vi.fn(),
-        verify: vi.fn(),
-    },
+vi.mock('../../../helpers/jwt.js', () => ({
+    signJwt: vi.fn().mockResolvedValue('signed-token'),
+    verifyJwt: vi.fn(),
 }));
 
 const bcrypt = (await import('bcrypt')).default;
-const jwt = (await import('jsonwebtoken')).default;
+const { signJwt, verifyJwt } = await import('../../../helpers/jwt.js');
 const auth = (await import('../../../middleware/auth.js')).auth;
 
 describe('auth middleware', () => {
@@ -38,11 +37,10 @@ describe('auth middleware', () => {
             id: 1,
             name: 'Test User',
             email: 'user@example.com',
-            password: 'hash',
+            password: '$2b$10$hashed',
         };
         bcrypt.compare.mockResolvedValue(true);
-        jwt.sign.mockReturnValue('signed-token');
-        jwt.verify.mockReturnValue({ user: 'user@example.com' });
+        verifyJwt.mockResolvedValue({ email: 'user@example.com' });
     });
 
     test('authenticates email/password requests', async () => {
@@ -62,15 +60,43 @@ describe('auth middleware', () => {
         expect(next).toHaveBeenCalledWith();
     });
 
-    test('rejects invalid bearer tokens', async () => {
-        jwt.verify.mockImplementation(() => {
-            throw new Error('invalid');
-        });
+    test('authenticates requests using HttpOnly cookie token', async () => {
         const req = {
+            headers: {
+                cookie: 'app_session=valid-cookie-token',
+            },
             body: {},
+        };
+        const next = vi.fn();
+
+        await auth({ 'user:exists': true })(req, {}, next);
+
+        expect(req.user.email).toBe('user@example.com');
+        expect(next).toHaveBeenCalledWith();
+    });
+
+    test('authenticates requests using Bearer authorization header fallback', async () => {
+        const req = {
+            headers: {
+                authorization: 'Bearer valid-header-token',
+            },
+            body: {},
+        };
+        const next = vi.fn();
+
+        await auth({ 'user:exists': true })(req, {}, next);
+
+        expect(req.user.email).toBe('user@example.com');
+        expect(next).toHaveBeenCalledWith();
+    });
+
+    test('rejects invalid or expired tokens', async () => {
+        verifyJwt.mockResolvedValue(null);
+        const req = {
             headers: {
                 authorization: 'Bearer bad-token',
             },
+            body: {},
         };
         const next = vi.fn();
 
@@ -79,10 +105,10 @@ describe('auth middleware', () => {
         expect(next.mock.calls[0][0].message).toBe('Invalid token.');
     });
 
-    test('allows optional auth without a token', async () => {
+    test('allows optional auth without token without failing', async () => {
         const req = {
-            body: {},
             headers: {},
+            body: {},
         };
         const next = vi.fn();
 

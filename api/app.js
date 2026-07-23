@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { errorMiddleware } from './middleware/error.js';
+import { authRouter as auth } from './route/auth.js';
 import { loginRouter as login } from './route/login.js';
 import { itemsRouter as items } from './route/items.js';
 import { Mysql } from './helpers/mysql.js';
@@ -18,6 +19,7 @@ app.get('/ready', (req, res) => {
     res.status(200).send({ message: 'API is ready.' });
 });
 
+app.use('/auth', auth);
 app.use('/login', login);
 app.use('/items', items);
 
