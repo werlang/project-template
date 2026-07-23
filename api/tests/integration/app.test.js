@@ -1,13 +1,13 @@
 import request from 'supertest';
 import { afterAll, beforeEach, describe, expect, test } from 'vitest';
-import { Mysql } from '../../helpers/mysql.js';
+import { Postgres } from '../../helpers/postgres.js';
 import { User } from '../../model/user.js';
 import { app } from '../../app.js';
 
 async function resetWithRetry(attempts = 20) {
     for (let attempt = 1; attempt <= attempts; attempt++) {
         try {
-            await Mysql.resetTables(['items', 'users']);
+            await Postgres.resetTables(['items', 'users']);
             return;
         }
         catch (error) {
@@ -28,7 +28,7 @@ describe('API integration', () => {
     });
 
     afterAll(async () => {
-        await Mysql.close();
+        await Postgres.close();
     });
 
     test('reports readiness', async () => {

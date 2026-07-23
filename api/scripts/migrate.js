@@ -1,13 +1,13 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { Mysql } from '../helpers/mysql.js';
+import { Postgres } from '../helpers/postgres.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const MIGRATIONS_DIR = path.join(__dirname, '../migrations');
-const LOCK_NAME = 'schema_migrations_lock';
+const LOCK_KEY = 987654321;
 
 /**
  * Splits SQL script into individual non-empty statements.
@@ -28,25 +28,31 @@ export function splitSqlStatements(sqlContent) {
  * @returns {Promise<void>}
  */
 export async function migrate() {
-    await Mysql.connect();
-    const pool = Mysql.connection;
+    await Postgres.connect();
+    const pool = Postgres.connection;
 
-    // Acquire MySQL advisory lock to prevent concurrent migration runs
-    await pool.query('SELECT GET_LOCK(?, ?)', [LOCK_NAME, 10]);
+    // Acquire PostgreSQL advisory lock to prevent concurrent migration runs
+    await pool.query('SELECT pg_advisory_lock($1)', [LOCK_KEY]);
 
     try {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS schema_migrations (
                 version INT PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
-                applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+                applied_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            );
         `);
 
-        const [rows] = await pool.query('SELECT version FROM schema_migrations');
+        const { rows } = await pool.query('SELECT version FROM schema_migrations');
         const appliedVersions = new Set(rows.map(row => Number(row.version)));
 
-        const files = await fs.readdir(MIGRATIONS_DIR);
+        let files = [];
+        try {
+            files = await fs.readdir(MIGRATIONS_DIR);
+        } catch {
+            files = [];
+        }
+
         const migrationFiles = files
             .filter(f => f.endsWith('.sql'))
             .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
@@ -65,19 +71,19 @@ export async function migrate() {
             const statements = splitSqlStatements(sqlContent);
 
             console.log(`Applying migration ${file}...`);
-            await Mysql.withTransaction(async ({ connection }) => {
+            await Postgres.withTransaction(async ({ connection }) => {
                 for (const statement of statements) {
                     await connection.query(statement);
                 }
                 await connection.query(
-                    'INSERT INTO schema_migrations (version, name) VALUES (?, ?)',
+                    'INSERT INTO schema_migrations (version, name) VALUES ($1, $2)',
                     [version, file]
                 );
             });
             console.log(`Successfully applied migration ${file}.`);
         }
     } finally {
-        await pool.query('SELECT RELEASE_LOCK(?)', [LOCK_NAME]);
+        await pool.query('SELECT pg_advisory_unlock($1)', [LOCK_KEY]);
     }
 }
 
@@ -85,11 +91,11 @@ if (process.argv[1] === __filename) {
     migrate()
         .then(() => {
             console.log('Database migration completed successfully.');
-            return Mysql.close();
+            return Postgres.close();
         })
         .catch(async err => {
             console.error('Migration failed:', err);
-            await Mysql.close();
+            await Postgres.close();
             process.exit(1);
         });
 }

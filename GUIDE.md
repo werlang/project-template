@@ -2,16 +2,16 @@
 
 ## Architecture
 
-The project is split into `web`, `api`, and `mysql` services.
+The project is split into `web`, `api`, and `postgres` services.
 
 - `web` renders Mustache templates and serves bundled browser assets.
 - `api` exposes REST endpoints and owns all server-side business behavior.
-- `mysql` stores application data and is initialized from `database.sql`.
+- `postgres` stores application data and is initialized from `database.sql`.
 
 The dependency direction is:
 
 ```text
-browser page script -> frontend components/helpers/models -> API routes -> API models -> MySQL helper -> MySQL
+browser page script -> frontend components/helpers/models -> API routes -> API models -> PostgreSQL helper -> PostgreSQL
 ```
 
 ## Web Service
@@ -54,9 +54,9 @@ Routes should:
 
 `web/src/js/helpers/translate.js` provides the client-side `Translator` class wrapping `i18next` and `TemplateVar`, allowing browser components to translate template strings with `translator.translate(key, ns)` and API error codes with `translator.translateApiError(errorPayload, 'api-responses')`.
 
-`api/model/` contains entity classes. These classes own persistence, table field maps, allowed update fields, and entity-specific business behavior.
+`api/model/` contains entity classes. These classes own persistence, table field maps, allowed update fields, and entity-specific business behavior. All entities implement the Dual-ID strategy: internal primary keys and foreign key relationships use 8-byte `BIGINT GENERATED ALWAYS AS IDENTITY`, while external API routes and public JSON response shapes (`toJSON()`) use 14-character Base62 `public_id VARCHAR(14) NOT NULL UNIQUE` generated via `nanoid` inside base `Model.insert()`.
 
-`api/helpers/mysql.js` is the only place that builds SQL. Models call CRUD-shaped helper methods such as `find`, `findOne`, `get`, `insert`, `upsert`, `update`, and `delete`, and use helper utilities such as transactions, raw fragments, date formatting, and database dumps without moving SQL construction into models.
+`api/helpers/postgres.js` is the driver helper that builds SQL for PostgreSQL. Models call CRUD-shaped helper methods such as `find`, `findOne`, `get`, `insert`, `upsert`, `update`, and `delete`, and use helper utilities such as transactions, raw fragments, date formatting, and table resets.
 
 `api/helpers/cookies.js` provides the `Cookies` helper class for parsing incoming cookies from requests/headers and setting/clearing HttpOnly, secure, SameSite session cookies on response objects.
 
@@ -72,7 +72,7 @@ Routes should:
 - `GET /auth/me`: retrieves currently authenticated user profile from valid session.
 - `POST /auth/logout`: logs out user by clearing the HttpOnly session cookie.
 
-`api/scripts/migrate.js` runs versioned database migrations from `api/migrations/`. Migrations use MySQL advisory locks (`SELECT GET_LOCK('schema_migrations_lock', 10)`) and track applied versions in the `schema_migrations` table.
+`api/scripts/migrate.js` runs versioned database migrations from `api/migrations/`. Migrations use PostgreSQL advisory locks (`SELECT pg_advisory_lock(...)`) and track applied versions in the `schema_migrations` table.
 
 ## Customizing For A New Project
 

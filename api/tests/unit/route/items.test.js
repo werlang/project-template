@@ -2,13 +2,15 @@ import { describe, expect, test, vi } from 'vitest';
 
 const createdItem = {
     id: 1,
+    public_id: '4fK9zX2mL8pQ1w',
     name: 'Created item',
     description: 'Created description',
     owner: null,
     created_at: '2026-01-01T00:00:00.000Z',
     toJSON() {
         return {
-            id: this.id,
+            id: this.public_id,
+            publicId: this.public_id,
             name: this.name,
             description: this.description,
             owner: this.owner,
@@ -32,6 +34,11 @@ vi.mock('../../../model/item.js', () => ({
 
         static async getAll() {
             return [createdItem];
+        }
+
+        async getBy(field) {
+            Object.assign(this, createdItem);
+            return this;
         }
 
         async get() {

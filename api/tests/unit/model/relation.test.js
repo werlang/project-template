@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-vi.mock('../../../helpers/mysql.js', () => ({
-    Mysql: {
+vi.mock('../../../helpers/postgres.js', () => ({
+    Postgres: {
         find: vi.fn(),
         insert: vi.fn(),
         update: vi.fn(),
@@ -9,7 +9,7 @@ vi.mock('../../../helpers/mysql.js', () => ({
     },
 }));
 
-const Db = (await import('../../../helpers/mysql.js')).Mysql;
+const Db = (await import('../../../helpers/postgres.js')).Postgres;
 const Relation = (await import('../../../model/relation.js')).Relation;
 
 describe('Relation model helper', () => {
@@ -21,7 +21,7 @@ describe('Relation model helper', () => {
 
     test('inserts a missing relation', async () => {
         Db.find.mockResolvedValue([]);
-        Db.insert.mockResolvedValue([{ insertId: 1 }]);
+        Db.insert.mockResolvedValue([{ id: 1 }]);
 
         await relation.insert(2);
 

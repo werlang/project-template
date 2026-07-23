@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { Mysql } from '../../../helpers/mysql.js';
+import { Postgres } from '../../../helpers/postgres.js';
 import { migrate, splitSqlStatements } from '../../../scripts/migrate.js';
 
 describe('Migrate Script', () => {
@@ -9,14 +9,14 @@ describe('Migrate Script', () => {
         mockPool = {
             query: vi.fn().mockImplementation(async (sql) => {
                 if (sql.includes('SELECT version FROM schema_migrations')) {
-                    return [[{ version: 1 }]];
+                    return { rows: [{ version: 1 }] };
                 }
-                return [[]];
+                return { rows: [] };
             }),
         };
-        vi.spyOn(Mysql, 'connect').mockResolvedValue(Mysql);
-        Mysql.connection = mockPool;
-        vi.spyOn(Mysql, 'withTransaction').mockImplementation(async (fn) => {
+        vi.spyOn(Postgres, 'connect').mockResolvedValue(Postgres);
+        Postgres.connection = mockPool;
+        vi.spyOn(Postgres, 'withTransaction').mockImplementation(async (fn) => {
             await fn({ connection: mockPool });
         });
     });
@@ -42,8 +42,8 @@ describe('Migrate Script', () => {
     it('acquires advisory lock, creates schema_migrations, applies pending migrations, and releases lock', async () => {
         await migrate();
 
-        expect(mockPool.query).toHaveBeenCalledWith('SELECT GET_LOCK(?, ?)', ['schema_migrations_lock', 10]);
+        expect(mockPool.query).toHaveBeenCalledWith('SELECT pg_advisory_lock($1)', [987654321]);
         expect(mockPool.query).toHaveBeenCalledWith(expect.stringContaining('CREATE TABLE IF NOT EXISTS schema_migrations'));
-        expect(mockPool.query).toHaveBeenCalledWith('SELECT RELEASE_LOCK(?)', ['schema_migrations_lock']);
+        expect(mockPool.query).toHaveBeenCalledWith('SELECT pg_advisory_unlock($1)', [987654321]);
     });
 });

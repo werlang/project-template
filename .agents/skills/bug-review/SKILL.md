@@ -15,7 +15,7 @@ Use this skill for code reviews, security audits, or defect investigations.
 
 1. **Security & Authorization**: Inspect auth middleware, token validation, password hashing, and endpoint authorization checks.
 2. **Boundary Violations**: Ensure `web/` (Mustache SSR, components, DOM) and `api/` (Express routes, models, MySQL helpers) responsibilities remain strictly decoupled.
-3. **SQL & Filter Safety**: Verify queries in `api/helpers/mysql.js` use parameterized statements and safe filter builders to prevent SQL injection.
+3. **SQL & Filter Safety**: Verify queries in `api/helpers/postgres.js` use parameterized statements and safe filter builders to prevent SQL injection.
 4. **DOM Ownership & Data Attributes**: Confirm DOM access lives exclusively in `web/src/js/components/` and no domain data is stored in `data-*` attributes.
 5. **API Contract Drift**: Check camelCase JSON response contracts between API routes and frontend models.
 6. **Missing Regression Tests**: Verify that bug fixes or behavior changes include automated tests to prevent regressions.

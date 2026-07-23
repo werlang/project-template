@@ -32,24 +32,25 @@ services:
         networks:
             - template
         depends_on:
-            - mysql
-    mysql:
-        image: mysql:8.0
+            - postgres
+    postgres:
+        image: postgres:18-alpine
         restart: unless-stopped
         environment:
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
         volumes:
-            - mysql:/var/lib/mysql
+            - postgres:/var/lib/postgresql/data
             - ./database.sql:/docker-entrypoint-initdb.d/init.sql:ro
         ports:
-            - 127.0.0.1:${MYSQL_PORT}:3306
+            - 127.0.0.1:${POSTGRES_PORT}:5432
         networks:
             - template
 volumes:
     node_modules_web:
     node_modules_api:
-    mysql:
+    postgres:
 networks:
     template:
         name: template

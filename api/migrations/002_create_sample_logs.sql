@@ -1,7 +1,9 @@
-CREATE TABLE IF NOT EXISTS `sample_logs` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `action` varchar(255) NOT NULL,
-    `details` text,
-    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS sample_logs (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    public_id VARCHAR(14) NOT NULL UNIQUE,
+    action VARCHAR(255) NOT NULL,
+    details TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+

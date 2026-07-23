@@ -6,19 +6,20 @@ import { Model } from './model.js';
  */
 export class User extends Model {
     /**
-     * @param {{ id?: number, name?: string, email?: string, password?: string, created_at?: string }} fields
+     * @param {{ id?: number|string, public_id?: string, name?: string, email?: string, password?: string, created_at?: string }} fields
      */
-    constructor({ id, name, email, password, created_at } = {}) {
+    constructor({ id, public_id, name, email, password, created_at } = {}) {
         super('users', {
             fields: {
                 id,
+                public_id,
                 created_at,
                 name,
                 email,
                 password,
             },
             allowUpdate: ['name', 'email', 'password'],
-            insertFields: ['name', 'email', 'password'],
+            insertFields: ['public_id', 'name', 'email', 'password'],
             sanitizeFields: ['name', 'email'],
         });
     }
@@ -71,13 +72,14 @@ export class User extends Model {
     }
 
     /**
-     * Returns a public JSON shape.
+     * Returns a public JSON shape with 14-character NanoID public identifier.
      *
-     * @returns {{ id: number, name: string, email: string, createdAt: string }}
+     * @returns {{ id: string, publicId: string, name: string, email: string, createdAt: string }}
      */
     toJSON() {
         return {
-            id: this.id,
+            id: this.public_id,
+            publicId: this.public_id,
             name: this.name,
             email: this.email,
             createdAt: this.created_at,

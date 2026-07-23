@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-vi.mock('../../../helpers/mysql.js', () => ({
-    Mysql: {
+vi.mock('../../../helpers/postgres.js', () => ({
+    Postgres: {
         insert: vi.fn(),
         find: vi.fn(),
         update: vi.fn(),
@@ -9,7 +9,7 @@ vi.mock('../../../helpers/mysql.js', () => ({
     },
 }));
 
-const Db = (await import('../../../helpers/mysql.js')).Mysql;
+const Db = (await import('../../../helpers/postgres.js')).Postgres;
 const Model = (await import('../../../model/model.js')).Model;
 
 describe('Model base class', () => {
@@ -29,7 +29,7 @@ describe('Model base class', () => {
     });
 
     test('inserts configured fields and refreshes the model', async () => {
-        Db.insert.mockResolvedValue([{ insertId: 7 }]);
+        Db.insert.mockResolvedValue([{ id: 7 }]);
         Db.find.mockResolvedValue([{ id: 7, name: 'Sample', locked: 'secret' }]);
 
         await model.insert();
@@ -39,6 +39,28 @@ describe('Model base class', () => {
             locked: 'secret',
         });
         expect(model.id).toBe(7);
+    });
+
+    test('automatically generates 14-char public_id when included in insertFields', async () => {
+        const publicModel = new Model('sample_table', {
+            fields: { name: 'Test' },
+            allowUpdate: ['name'],
+            insertFields: ['public_id', 'name'],
+        });
+
+        let savedPublicId;
+        Db.insert.mockImplementation(async (table, data) => {
+            savedPublicId = data.public_id;
+            return [{ id: 10, public_id: savedPublicId }];
+        });
+        Db.find.mockImplementation(async () => [{ id: 10, public_id: savedPublicId, name: 'Test' }]);
+
+        await publicModel.insert();
+
+        expect(publicModel.public_id).toBeDefined();
+        expect(typeof publicModel.public_id).toBe('string');
+        expect(publicModel.public_id).toHaveLength(14);
+        expect(publicModel.public_id).toMatch(/^[0-9A-Za-z]{14}$/);
     });
 
     test('loads by custom field', async () => {

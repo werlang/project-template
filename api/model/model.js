@@ -1,6 +1,12 @@
+import { customAlphabet } from 'nanoid';
 import { CustomError } from '../helpers/error.js';
-import { Mysql as Db } from '../helpers/mysql.js';
+import { Postgres as Db } from '../helpers/postgres.js';
 import { Relation } from './relation.js';
+
+export const generatePublicId = customAlphabet(
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+    14
+);
 
 /**
  * Base entity model that wraps generic CRUD behavior.
@@ -66,6 +72,10 @@ export class Model {
      * @returns {Promise<Model>}
      */
     async insert() {
+        if (this.#insertFields.includes('public_id') && !this.public_id) {
+            this.public_id = generatePublicId();
+        }
+
         const insertData = {};
         for (const field of this.#insertFields) {
             const value = this.sanitizeWriteValue(field, this[field]);
@@ -75,25 +85,29 @@ export class Model {
         }
 
         const result = await Db.insert(this.#tableName, insertData);
-        this.id = result[0].insertId;
+        this.id = result[0]?.id ?? result[0]?.insertId;
+        if (result[0]?.public_id) {
+            this.public_id = result[0].public_id;
+        }
         return this.get();
     }
 
     /**
      * Loads this model by a specific field.
      *
-     * @param {string} field
-     * @param {Record<string, unknown>} additionalFilters
+     * @param {string} [field]
+     * @param {Record<string, unknown>} [additionalFilters]
      * @returns {Promise<Model>}
      */
-    async getBy(field = 'id', additionalFilters = {}) {
-        if (!this[field]) {
+    async getBy(field, additionalFilters = {}) {
+        const targetField = field || (this.id !== undefined ? 'id' : 'public_id');
+        if (!this[targetField]) {
             throw new CustomError(400, 'Invalid field.', 'INVALID_FIELD');
         }
 
         const items = await Db.find(this.#tableName, {
             filter: {
-                [field]: this[field],
+                [targetField]: this[targetField],
                 ...additionalFilters,
             },
             opt: { limit: 1 },
@@ -108,7 +122,7 @@ export class Model {
     }
 
     /**
-     * Loads this model by id.
+     * Loads this model by id or public_id.
      *
      * @returns {Promise<Model>}
      */

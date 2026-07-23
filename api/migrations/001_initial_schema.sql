@@ -1,20 +1,21 @@
-CREATE TABLE IF NOT EXISTS `users` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    `name` varchar(255) NOT NULL,
-    `email` varchar(255) NOT NULL,
-    `password` varchar(255) NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    public_id VARCHAR(14) NOT NULL UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
 
-CREATE TABLE IF NOT EXISTS `items` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    `name` varchar(255) NOT NULL,
-    `description` text,
-    `owner` int DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    KEY `items_owner_index` (`owner`),
-    CONSTRAINT `items_owner_fk` FOREIGN KEY (`owner`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS items (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    public_id VARCHAR(14) NOT NULL UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    owner BIGINT DEFAULT NULL REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE INDEX IF NOT EXISTS items_owner_index ON items(owner);
+
+

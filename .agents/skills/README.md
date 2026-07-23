@@ -10,5 +10,5 @@ These skills describe the generic web/API template boundaries and workflow rules
 - `api-development`: Express route, middleware, and response conventions.
 - `frontend-development`: Mustache, render middleware, Webpack, page script, helper, model, and component boundaries.
 - `entity-models`: OOP entity model conventions and relation handling.
-- `mysql-helper`: MySQL helper ownership and SQL boundary rules.
+- `postgres-helper`: PostgreSQL helper ownership and SQL boundary rules.
 - `css-standards`: Shared tokens, page CSS, and component CSS rules.

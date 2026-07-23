@@ -4,7 +4,7 @@ import { errorMiddleware } from './middleware/error.js';
 import { authRouter as auth } from './route/auth.js';
 import { loginRouter as login } from './route/login.js';
 import { itemsRouter as items } from './route/items.js';
-import { Mysql } from './helpers/mysql.js';
+import { Postgres } from './helpers/postgres.js';
 
 const port = 3000;
 const host = '0.0.0.0';
@@ -41,7 +41,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.on('close', async () => {
-    await Mysql.close();
+    await Postgres.close();
 });
 
 export { app };

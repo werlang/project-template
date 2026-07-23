@@ -11,8 +11,9 @@ Use this skill when changing entity classes or persistence-facing business behav
 
 - Entity classes live in `api/model/`.
 - Extend `api/model/model.js` for standard CRUD behavior.
+- Implement the Dual-ID pattern: `id` (internal `BIGINT` identity for database FKs) and `public_id` (`VARCHAR(14) NOT NULL UNIQUE` generated via `nanoid` `customAlphabet` Base62 in `Model.insert()` and exposed in public `toJSON()` / route selectors).
 - Keep table fields, allowed update fields, insert fields, and entity-specific methods inside the model.
-- Models are the only ordinary production code that calls `api/helpers/mysql.js`.
+- Models are the only ordinary production code that calls `api/helpers/postgres.js`.
 - Use `api/model/relation.js` for relation tables instead of duplicating relation checks in routes.
 - Prefer adding an explicit model method when a workflow is repeated across routes.
 

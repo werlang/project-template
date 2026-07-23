@@ -50,7 +50,8 @@ export class ItemList {
             `;
             row.querySelector('h3').textContent = item.name;
             row.querySelector('p').textContent = item.description || this.translator.translate('noDescription', 'index');
-            row.querySelector('.item-id').textContent = item.id ? `#${item.id}` : '';
+            const displayId = item.id ? `#${item.id}` : '';
+            row.querySelector('.item-id').textContent = displayId;
             this.element.appendChild(row);
         });
     }

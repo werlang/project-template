@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
     try {
-        const item = await new Item({ id: req.params.id }).get();
+        const item = await new Item({ public_id: req.params.id }).getBy('public_id');
         res.send({ item: item.toJSON() });
     }
     catch (error) {
@@ -52,7 +52,7 @@ router.post('/', auth({ 'user:optional': true }), async (req, res, next) => {
 
 router.put('/:id', auth({ 'user:optional': true }), async (req, res, next) => {
     try {
-        const item = await new Item({ id: req.params.id }).get();
+        const item = await new Item({ public_id: req.params.id }).getBy('public_id');
         const toUpdate = {};
 
         if (req.body.name !== undefined) {
@@ -82,7 +82,7 @@ router.put('/:id', auth({ 'user:optional': true }), async (req, res, next) => {
 
 router.delete('/:id', auth({ 'user:optional': true }), async (req, res, next) => {
     try {
-        const item = await new Item({ id: req.params.id }).get();
+        const item = await new Item({ public_id: req.params.id }).getBy('public_id');
         await item.delete();
         res.status(204).send();
     }

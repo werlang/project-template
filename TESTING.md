@@ -10,7 +10,7 @@ docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:un
 docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:integration"
 ```
 
-Unit tests mock the MySQL helper or model dependencies. Integration tests run against the composed MySQL service and reset sample data before each test file.
+Unit tests mock the PostgreSQL helper or model dependencies. Integration tests run against the composed PostgreSQL service and reset sample data before each test file.
 
 ## Web Tests
 

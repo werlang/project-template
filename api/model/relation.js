@@ -1,5 +1,5 @@
 import { CustomError } from '../helpers/error.js';
-import { Mysql as Db } from '../helpers/mysql.js';
+import { Postgres as Db } from '../helpers/postgres.js';
 
 /**
  * Helper for many-to-many relation tables.
