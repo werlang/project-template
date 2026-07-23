@@ -1,76 +1,73 @@
 ---
 name: documentation-maintenance
-description: Keep this template's human docs, agent guidance, and touched code comments aligned with the real web/api implementation, compose workflow, and validation commands.
+description: "Keep human docs, agent guidance, and touched code comments aligned with the real web/api implementation, compose workflow, and validation commands. Auto-invoke when auditing docs or after major architectural changes. Triggers: \"audit docs\", \"check context\", \"documentation maintenance\", \"audit documentation\", \"verify docs\"."
+argument-hint: "Target doc file or repository component to audit"
+user-invocable: true
 ---
 
 # Documentation Maintenance
 
-Use this skill as the final consistency pass after any change that could alter how people or agents understand, run, test, customize, or extend this template.
+Use this skill as the final consistency pass after any change that could alter how humans or agents understand, run, test, customize, or extend this template.
 
-## Core Rule
+---
 
-Treat documentation, local skills, and touched code comments as part of the implementation.
+## 1. Core Rule
 
-If a change affects architecture, ownership boundaries, commands, routes, scripts, env vars, compose files, tests, sample entities, or developer workflow, verify whether the checked guidance still matches the code and update it in the same pass.
+Treat documentation, local skills, and touched code comments as part of the implementation. Code and configuration are the source of truth. Remove or rewrite aspirational claims that are not enforced by code.
 
-## Template Owners
+---
 
-Check the narrowest owner that already covers the changed topic.
+## 2. Template Owner Mapping
 
-- `README.md`: first-run setup, quick-start commands, service summary, public template positioning.
-- `GUIDE.md`: architecture, ownership boundaries, render flow, helper/model/component responsibilities, customization guidance.
-- `TESTING.md`: validation commands, test scope, build checks, browser-smoke workflow.
-- `AGENTS.md`: repository-wide rules for future agents.
-- `.agents/skills/*/SKILL.md`: project-specific workflow rules that should stay durable for future changes.
+Check the narrowest owner that already covers the changed topic:
+
+- `README.md`: First-run setup, quick-start commands, service summary, public template positioning.
+- `GUIDE.md`: Architecture, ownership boundaries, render flow, helper/model/component responsibilities.
+- `TESTING.md`: Validation commands, test scope, build checks, browser-smoke workflow.
+- `AGENTS.md`: Repository-wide rules for future agents.
+- `.agents/skills/*/SKILL.md`: Project-specific workflow rules that stay durable for future changes.
 - Touched source files: JSDoc and focused local comments for exported functions, public methods, constructors, and materially changed private helpers.
 
-## Repository-Specific Checks
+---
 
-Prioritize these checks for this template:
+## 3. Required Audit & Consistency Checks
 
-- Keep `web/` and `api/` responsibilities separate in docs and comments.
-- Keep DOM ownership inside `web/src/js/components/`.
-- Keep browser API calls inside `web/src/js/model/`.
-- Keep API persistence inside `api/model/`.
-- Keep SQL generation inside `api/helpers/mysql.js`.
-- Keep API responses described as camelCase JSON payloads.
-- Keep render guidance aligned with `web/middleware/render.js` and the current server-provided template-var flow.
-- Keep runtime docs aligned with `compose.yaml`, standalone `compose.dev.yaml`, and `compose.playwright.yaml`.
-- Treat the checked-in `items` flow as sample starter behavior unless the template itself changes that baseline.
+Prioritize these checks during documentation audits:
 
-## Update Workflow
+- **Verification of Real Assets**: Confirm routes, scripts, env vars, ports, Docker Compose flags, and file paths are real.
+- **Service Boundary Alignment**: Keep `web/` and `api/` responsibilities separate in docs and comments.
+- **DOM & Browser API Conventions**: Keep DOM ownership inside `web/src/js/components/` and API calls inside `web/src/js/model/`.
+- **Data Attribute Rules**: Ensure docs reflect the strict prohibition against storing domain data in HTML `data-*` attributes.
+- **Persistence & SQL Conventions**: Keep API persistence inside `api/model/` and SQL generation inside `api/helpers/mysql.js`.
+- **Link & Terminology Sweep**: Sweep for broken relative links, obsolete script names, and contradictory claims across all `.md` files.
 
-1. Identify what changed: behavior, contract, workflow, boundary, command, or convention.
-2. Search for stale references with targeted `rg` queries using changed filenames, scripts, env vars, route names, helper names, UI labels, schema fields, and compose commands.
-3. Read the nearest owner before editing it.
-4. Update the smallest correct owner first instead of copying the same detail across several docs.
-5. If the change affects future agent behavior, update `AGENTS.md` or the relevant `.agents/skills/*/SKILL.md` in the same pass.
-6. Review touched code comments and JSDoc before finishing.
-7. Validate that every documented file, command, route, and script actually exists.
+---
 
-## Validation Commands
+## 4. Audit Workflow
 
-Use the lightest command that proves the changed documentation claim.
+1. **Identify Changes**: Determine what changed: behavior, contract, workflow, boundary, command, or convention.
+2. **Search Stale References**: Search with targeted `rg` queries using changed filenames, scripts, env vars, route names, and compose commands.
+3. **Build Mismatch Ledger**: Record discrepancies between documented claims and codebase reality.
+4. **Update Smallest Owner First**: Update the primary owner document instead of duplicating details across multiple files.
+5. **Update Agent Context**: If future agent behavior changes, update `AGENTS.md` or `.agents/skills/*/SKILL.md`.
+6. **Validate Claims**: Run the narrowest validation command that proves documented setup or test claims exist and work.
 
-- API unit: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:unit"`
-- API integration: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:integration"`
-- Web build: `docker compose -f compose.dev.yaml exec web npm run build`
-- Render-focused web test: `docker compose -f compose.dev.yaml exec web node --test tests/render.test.js`
-- Browser smoke: `docker compose -f compose.dev.yaml -f compose.playwright.yaml up -d playwright` then `docker compose -f compose.dev.yaml -f compose.playwright.yaml exec playwright npx playwright test`
+---
 
-If runtime validation is unnecessary or unavailable, finish with targeted existence checks and stale-reference searches, then report that narrower validation scope explicitly.
+## 5. Validation Commands
 
-## Comment Standard
+- **API Unit**: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:unit"`
+- **API Integration**: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:integration"`
+- **Web Build**: `docker compose -f compose.dev.yaml exec web npm run build`
+- **Render-Focused Web Test**: `docker compose -f compose.dev.yaml exec web node --test tests/render.test.js`
+- **Browser Smoke**: `docker compose -f compose.dev.yaml -f compose.playwright.yaml up -d playwright` then `docker compose -f compose.dev.yaml -f compose.playwright.yaml exec playwright npx playwright test`
 
-- Add or update JSDoc on touched exported functions, public methods, constructors, and materially changed private helpers.
-- Keep local comments sparse and high-signal.
-- Explain non-obvious ordering, normalization, fallback behavior, validation boundaries, caching, async flow, or edge cases.
-- Remove comments that only narrate the next line or preserve obsolete behavior.
+---
 
-## Done Criteria
+## 6. Done Criteria
 
-- Relevant stale docs and local skills were checked and updated where needed.
-- Human docs still describe the real compose workflow, service boundaries, and validation commands.
-- Agent guidance still matches the current template conventions.
+- Relevant stale docs and local skills were audited and updated.
+- Human docs match the real compose workflow, service boundaries, and validation commands.
+- Agent guidance matches current template conventions.
 - Touched code comments and JSDoc match the implementation.
-- Final reporting names the docs or guidance updated, or explicitly states that the documentation pass found no required edits.
+- Final reporting lists the docs updated or explicitly confirms that no documentation edits were required.

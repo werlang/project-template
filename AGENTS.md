@@ -25,8 +25,8 @@ This repository is a generic Node/Express web/API template. Preserve the service
 
 ## Default Validation
 
-- API migrations: `docker compose -f compose.dev.yaml exec api npm run db:migrate`
 - API unit: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:unit"`
-- API integration: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:integration"`
-- Web build: `docker compose -f compose.dev.yaml exec web npm run build`
-- Browser smoke: `docker compose -f compose.dev.yaml -f compose.playwright.yaml up -d playwright` then `docker compose -f compose.dev.yaml -f compose.playwright.yaml exec playwright npx playwright test`
+- Web build & render unit tests: `docker compose -f compose.dev.yaml exec web npm run build` and `docker compose -f compose.dev.yaml exec web node --test tests/render.test.js`
+- API migrations (when DB schema changes): `docker compose -f compose.dev.yaml exec api npm run db:migrate`
+
+> **Note**: Integration/functional tests (`test:integration`) and E2E/browser tests (Playwright) are executed **only upon explicit request**.

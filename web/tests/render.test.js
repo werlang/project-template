@@ -2,11 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { renderMiddleware, flattenTranslations, safeJsonStringify } from '../middleware/render.js';
 
-const attachMiddleware = ({ fixedVars = {}, options = {}, req = {} } = {}) => {
+const attachMiddleware = async ({ fixedVars = {}, options = {}, req = {} } = {}) => {
     const middleware = renderMiddleware(fixedVars, options);
     const res = {
         body: '',
         statusCode: 200,
+        locals: {},
         send(payload) {
             this.body = payload;
             return this;
@@ -18,15 +19,18 @@ const attachMiddleware = ({ fixedVars = {}, options = {}, req = {} } = {}) => {
     };
 
     let nextError;
-    middleware(req, res, error => {
-        nextError = error;
+    await new Promise(resolve => {
+        middleware(req, res, error => {
+            nextError = error;
+            resolve();
+        });
     });
 
     return { res, nextError };
 };
 
 test('render middleware injects runtime vars into rendered views by default', async () => {
-    const { res, nextError } = attachMiddleware({
+    const { res, nextError } = await attachMiddleware({
         fixedVars: {
             appName: 'Template App',
             apiurl: 'http://api:3000',
@@ -51,7 +55,7 @@ test('render middleware injects runtime vars into rendered views by default', as
 });
 
 test('render middleware can skip sending runtime vars to the browser', async () => {
-    const { res, nextError } = attachMiddleware({
+    const { res, nextError } = await attachMiddleware({
         fixedVars: {
             appName: 'Template App',
         },
