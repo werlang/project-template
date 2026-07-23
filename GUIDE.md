@@ -56,6 +56,8 @@ Routes should:
 
 `api/middleware/auth.js` provides JWT bearer authentication and bcrypt password login support. Keep authentication reusable and route-independent.
 
+`api/scripts/migrate.js` runs versioned database migrations from `api/migrations/`. Migrations use MySQL advisory locks (`SELECT GET_LOCK('schema_migrations_lock', 10)`) and track applied versions in the `schema_migrations` table.
+
 ## Customizing For A New Project
 
 1. Rename package names in `web/package.json` and `api/package.json`.

@@ -25,6 +25,9 @@ Open:
 # Start the local stack
 docker compose -f compose.dev.yaml up -d --build
 
+# Run database migrations
+docker compose -f compose.dev.yaml exec api npm run db:migrate
+
 # API unit tests
 docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:unit"
 

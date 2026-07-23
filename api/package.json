@@ -6,6 +6,7 @@
   "scripts": {
     "production": "node app.js",
     "development": "node --inspect=0.0.0.0 --watch app.js",
+    "db:migrate": "node scripts/migrate.js",
     "test": "vitest run",
     "test:unit": "vitest run --config vitest.unit.config.mjs",
     "test:integration": "vitest run --config vitest.integration.config.mjs"

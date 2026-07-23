@@ -15,6 +15,7 @@ This repository is a generic Node/Express web/API template. Preserve the service
 - Keep browser API calls inside `web/src/js/model/` through helper classes.
 - Keep API persistence inside `api/model/`.
 - Keep SQL generation inside `api/helpers/mysql.js`.
+- Execute versioned database migrations using `api/scripts/migrate.js` (`npm run db:migrate`) reading SQL scripts from `api/migrations/`.
 - Use `CustomError` and `api/middleware/error.js` for API error responses.
 - Keep API response payloads camelCase.
 - Never store application data in DOM `data-*` attributes. Data attributes are for framework selectors and DOM behavior hooks only. All domain data (IDs, values, lookup mappings) must live in dedicated JavaScript structures — plain objects, Maps, or class properties.
@@ -24,6 +25,7 @@ This repository is a generic Node/Express web/API template. Preserve the service
 
 ## Default Validation
 
+- API migrations: `docker compose -f compose.dev.yaml exec api npm run db:migrate`
 - API unit: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:unit"`
 - API integration: `docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:integration"`
 - Web build: `docker compose -f compose.dev.yaml exec web npm run build`

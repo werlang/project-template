@@ -5,6 +5,7 @@
 The API uses Vitest with separate unit and integration configs.
 
 ```bash
+docker compose -f compose.dev.yaml exec api npm run db:migrate
 docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:unit"
 docker compose -f compose.dev.yaml exec api sh -c "NODE_ENV=test npm run test:integration"
 ```
