@@ -24,7 +24,10 @@
 
             <section class="workspace-grid">
                 <form id="item-form" class="panel surface-card">
-                    <h2>Create item</h2>
+                    <div class="panel-heading">
+                        <h2>Create item</h2>
+                        <span title="Fill in item details to create a record in the database"></span>
+                    </div>
                     <label>
                         <span>Name</span>
                         <input id="name" name="name" type="text" autocomplete="off" required maxlength="255">
@@ -39,7 +42,7 @@
                 <section class="panel surface-card">
                     <div class="panel-heading">
                         <h2>Items</h2>
-                        <button id="refresh-items" type="button" title="Refresh items">
+                        <button id="refresh-items" type="button" title="Refresh item list from server">
                             <i class="fa-solid fa-rotate"></i>
                         </button>
                     </div>

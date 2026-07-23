@@ -8,6 +8,9 @@ import { ApiStatus } from './components/api-status.js';
 import { Item } from './model/item.js';
 import { LocalData } from './helpers/local-data.js';
 import { Api } from './helpers/api.js';
+import { Tooltip } from './components/tooltip.js';
+
+Tooltip.bindAll();
 
 const itemList = new ItemList({
     element: document.querySelector('#item-list'),
