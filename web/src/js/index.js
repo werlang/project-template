@@ -53,16 +53,16 @@ async function loadItems() {
 async function checkApi() {
     try {
         await new Api().get('ready');
-        apiStatus.set('ready', 'API ready');
+        apiStatus.set('ready', translator.translate('apiReady', 'index'));
     }
     catch {
-        apiStatus.set('error', 'API unavailable');
+        apiStatus.set('error', translator.translate('apiUnavailable', 'index'));
     }
 }
 
 itemForm.submit(async (data, validation) => {
     if (validation.fail.total) {
-        new Toast(validation.fail.messages.name || 'Please check the form fields.', {
+        new Toast(validation.fail.messages.name || translator.translate('checkFormFields', 'index'), {
             tone: 'error',
             group: 'item-form-validation',
         });
@@ -71,7 +71,7 @@ itemForm.submit(async (data, validation) => {
 
     await new Item(data).create();
     itemForm.clear();
-    new Toast('Item created.', { tone: 'success', group: 'item-form' });
+    new Toast(translator.translate('itemCreated', 'index'), { tone: 'success', group: 'item-form' });
     await loadItems();
 });
 

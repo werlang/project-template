@@ -1,4 +1,5 @@
 import { Form } from './form.js';
+import { Translator } from '../helpers/translate.js';
 
 /**
  * DOM component for the sample item form.
@@ -15,6 +16,7 @@ export class ItemForm {
                 include: ['name', 'description'],
             },
         });
+        this.translator = new Translator();
     }
 
     /**
@@ -48,7 +50,7 @@ export class ItemForm {
                 {
                     id: 'name',
                     rule: value => String(value || '').trim().length > 0,
-                    message: 'Name is required.',
+                    message: this.translator.translate('NAME_REQUIRED', 'api-responses'),
                 },
             ]);
 

@@ -23,10 +23,7 @@ app.use(renderMiddleware({
 
 app.get('/', async (req, res, next) => {
     try {
-        await res.templateRender('index', {
-            pageTitle: 'Template App',
-            heading: 'Template App',
-        }, ['api-responses']);
+        await res.templateRender('index', {}, ['index', 'api-responses']);
     }
     catch (error) {
         next(error);
@@ -45,10 +42,7 @@ app.use(express.static(`${import.meta.dirname}/public/`));
 
 app.use(async (req, res, next) => {
     try {
-        await res.status(404).templateRender('notfound', {
-            pageTitle: 'Page not found',
-            heading: 'Page not found',
-        });
+        await res.status(404).templateRender('notfound', {}, ['notfound']);
     }
     catch (error) {
         next(error);

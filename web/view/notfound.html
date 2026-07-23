@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{lang}}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{pageTitle}}</title>
+    <title>{{pageTitle}}{{^pageTitle}}{{notfound:heading}}{{/pageTitle}}</title>
     <link rel="stylesheet" href="/css/index.min.css">
 </head>
 <body>
@@ -12,12 +12,12 @@
         <section class="page-shell compact">
             <header class="page-header">
                 <div>
-                    <p class="eyebrow">404</p>
-                    <h1>{{heading}}</h1>
-                    <p class="summary">The requested page does not exist in this template.</p>
+                    <p class="eyebrow">{{notfound:eyebrow}}</p>
+                    <h1>{{notfound:heading}}</h1>
+                    <p class="summary">{{notfound:summary}}</p>
                 </div>
             </header>
-            <a class="text-link" href="/">Return home</a>
+            <a class="text-link" href="/">{{notfound:returnHome}}</a>
         </section>
     </main>
 </body>

@@ -7,7 +7,7 @@ const VIEW_PATH = path.join(import.meta.dirname, '../view');
 
 const defaultOptions = {
     sendToClient: true,
-    language: false,
+    language: true,
     cache: true,
 };
 

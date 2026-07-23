@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{lang}}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{pageTitle}}</title>
+    <title>{{pageTitle}}{{^pageTitle}}{{index:heading}}{{/pageTitle}}</title>
     <link rel="stylesheet" href="/css/index.min.css">
 </head>
 <body>
@@ -12,37 +12,37 @@
         <section class="page-shell">
             <header class="page-header">
                 <div>
-                    <p class="eyebrow">Generic web/API starter</p>
-                    <h1>{{heading}}</h1>
-                    <p class="summary">A small working sample that keeps DOM, API, model, helper, and route responsibilities separated.</p>
+                    <p class="eyebrow">{{index:eyebrow}}</p>
+                    <h1>{{index:heading}}</h1>
+                    <p class="summary">{{index:summary}}</p>
                 </div>
                 <div class="status-pill surface-pill">
                     <span class="status-dot"></span>
-                    <span data-role="api-status">Checking API</span>
+                    <span data-role="api-status">{{index:checkingApi}}</span>
                 </div>
             </header>
 
             <section class="workspace-grid">
                 <form id="item-form" class="panel surface-card">
                     <div class="panel-heading">
-                        <h2>Create item</h2>
-                        <span title="Fill in item details to create a record in the database"></span>
+                        <h2>{{index:createItem}}</h2>
+                        <span title="{{index:createItemTooltip}}"></span>
                     </div>
                     <label>
-                        <span>Name</span>
+                        <span>{{index:name}}</span>
                         <input id="name" name="name" type="text" autocomplete="off" required maxlength="255">
                     </label>
                     <label>
-                        <span>Description</span>
+                        <span>{{index:description}}</span>
                         <textarea id="description" name="description" rows="4"></textarea>
                     </label>
-                    <button id="save-item" class="default" type="submit">Save item</button>
+                    <button id="save-item" class="default" type="submit">{{index:saveItem}}</button>
                 </form>
 
                 <section class="panel surface-card">
                     <div class="panel-heading">
-                        <h2>Items</h2>
-                        <button id="refresh-items" type="button" title="Refresh item list from server">
+                        <h2>{{index:items}}</h2>
+                        <button id="refresh-items" type="button" title="{{index:refreshItemsTooltip}}">
                             <i class="fa-solid fa-rotate"></i>
                         </button>
                     </div>

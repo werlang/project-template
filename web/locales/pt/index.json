@@ -1,0 +1,20 @@
+{
+  "eyebrow": "Starter web/API genérico",
+  "heading": "Aplicação Modelo",
+  "summary": "Uma pequena amostra funcional que mantém separadas as responsabilidades de DOM, API, modelo, helper e rotas.",
+  "checkingApi": "Verificando API",
+  "apiReady": "API pronta",
+  "apiUnavailable": "API indisponível",
+  "createItem": "Criar item",
+  "createItemTooltip": "Preencha os detalhes do item para criar um registro no banco de dados",
+  "name": "Nome",
+  "description": "Descrição",
+  "saveItem": "Salvar item",
+  "items": "Itens",
+  "refreshItemsTooltip": "Atualizar lista de itens do servidor",
+  "loadingItems": "Carregando itens...",
+  "noItemsYet": "Nenhum item ainda.",
+  "noDescription": "Sem descrição",
+  "itemCreated": "Item criado.",
+  "checkFormFields": "Por favor, verifique os campos do formulário."
+}

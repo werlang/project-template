@@ -1,0 +1,20 @@
+{
+  "eyebrow": "Generic web/API starter",
+  "heading": "Template App",
+  "summary": "A small working sample that keeps DOM, API, model, helper, and route responsibilities separated.",
+  "checkingApi": "Checking API",
+  "apiReady": "API ready",
+  "apiUnavailable": "API unavailable",
+  "createItem": "Create item",
+  "createItemTooltip": "Fill in item details to create a record in the database",
+  "name": "Name",
+  "description": "Description",
+  "saveItem": "Save item",
+  "items": "Items",
+  "refreshItemsTooltip": "Refresh item list from server",
+  "loadingItems": "Loading items...",
+  "noItemsYet": "No items yet.",
+  "noDescription": "No description",
+  "itemCreated": "Item created.",
+  "checkFormFields": "Please check the form fields."
+}

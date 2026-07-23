@@ -1,3 +1,5 @@
+import { Translator } from '../helpers/translate.js';
+
 /**
  * DOM component that renders the sample item collection.
  */
@@ -7,20 +9,21 @@ export class ItemList {
      */
     constructor({ element }) {
         this.element = element;
+        this.translator = new Translator();
     }
 
     /**
      * Renders loading copy while data is being fetched.
      */
     loading() {
-        this.element.innerHTML = '<p class="muted">Loading items...</p>';
+        this.element.innerHTML = `<p class="muted">${this.translator.translate('loadingItems', 'index')}</p>`;
     }
 
     /**
      * Renders an empty state.
      */
     empty() {
-        this.element.innerHTML = '<p class="muted">No items yet.</p>';
+        this.element.innerHTML = `<p class="muted">${this.translator.translate('noItemsYet', 'index')}</p>`;
     }
 
     /**
@@ -46,7 +49,7 @@ export class ItemList {
                 <span class="item-id"></span>
             `;
             row.querySelector('h3').textContent = item.name;
-            row.querySelector('p').textContent = item.description || 'No description';
+            row.querySelector('p').textContent = item.description || this.translator.translate('noDescription', 'index');
             row.querySelector('.item-id').textContent = item.id ? `#${item.id}` : '';
             this.element.appendChild(row);
         });
